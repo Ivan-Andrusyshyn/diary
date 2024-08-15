@@ -1,6 +1,9 @@
 {
   "name": "fullstuck-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "start:server": "nodemon server.js"
