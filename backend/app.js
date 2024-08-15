@@ -35,7 +35,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "*",
+    origin: "https://diary-yzm6.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
