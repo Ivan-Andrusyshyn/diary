@@ -49,11 +49,14 @@ app.use((req, res, next) => {
 
   next();
 });
+app.use(express.static(path.join(__dirname, "frontend")));
 
 app.use("/api/diary-posts", diaryRoutes);
 app.use("/api/diary-posts/query", diaryRoutes);
 
 app.use("/api/auth", userRoutes);
 app.use("/api/user", userRoutes);
-
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+});
 module.exports = app;
