@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="content-wrap">
+    <div>
+      <mat-tab-group>
+        <mat-tab class="tab-container" label="Пошук за датою">
+          <div style="margin-top: 1rem">
+            <app-diary-calendar
+              (filterPostsByDate)="filterPostsByDate($event)"
+              [diaryPosts]="diaryPosts"
+            ></app-diary-calendar>
+          </div>
+        </mat-tab>
+        <mat-tab class="tab-container" label="Пошук за словом">
+          <div style="margin-top: 1rem">
+            <mat-form-field class="input-wrap">
+              <mat-label>Подробиці пошуку</mat-label>
+              <input type="text" matInput (keyup)="onSearch($event)" />
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      <h3>Дописи :</h3>
+      <div class="list-wrap">
+        <ng-container
+          *ngIf="!(loadingService.isLoading() | async); else loading"
+        >
+          <app-diary-list
+            *ngIf="filteredPosts.length > 0; else noContent"
+            [posts]="filteredPosts"
+          ></app-diary-list>
+        </ng-container>
+      </div>
+    </div>
+
+    <div *ngIf="screenWidth > 1200" class="oultet-wrap">
+      <router-outlet />
+    </div>
+  </div>
+</div>
+<ng-template #noContent>
+  <div class="no-content">
+    <h3>Нажаль дописів не знайдено.</h3>
+  </div>
+</ng-template>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

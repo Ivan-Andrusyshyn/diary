@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="content-wrap">
+    <div class="title-wrap">
+      <h2>Який настрій сьогодні ?</h2>
+      <p>(Опиши свій вибір)</p>
+    </div>
+    <mat-tab-group>
+      <mat-tab label="Котик">
+        <ul>
+          <li
+            *ngFor="let img of catsImgs"
+            [class.currantImage]="img.imgUrl === currentImage.imgUrl"
+            (click)="onChooseImage(img)"
+          >
+            <img [src]="img.imgUrl" [alt]="img.imgAlt" />
+          </li>
+        </ul>
+      </mat-tab>
+      <mat-tab label="Песик">
+        <ul>
+          <li
+            *ngFor="let img of dogsImgs"
+            [class.currantImage]="img.imgUrl === currentImage.imgUrl"
+            (click)="onChooseImage(img)"
+          >
+            <img [src]="img.imgUrl" [alt]="img.imgTitle" />
+          </li>
+        </ul>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <app-diary-form
+    (onSubmit)="onSubmitForm()"
+    [currentImage]="currentImage"
+    [formGroup]="diaryFormGroup"
+  ></app-diary-form>
+</div>

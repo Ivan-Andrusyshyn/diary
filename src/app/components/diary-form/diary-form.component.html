@@ -1,0 +1,34 @@
+<div class="user-form">
+  <img [src]="currentImage.imgUrl" [alt]="currentImage.imgAlt" />
+  <div>
+    <form
+      class="form-group"
+      [formGroup]="formGroup"
+      (ngSubmit)="onSubmitForm()"
+    >
+      <div>
+        <label for="userDescribe">{{ currentImage.imgTitle }}</label>
+        <textarea
+          placeholder="Як ти став сьогодні таким котиком ?"
+          formControlName="userDescribe"
+          id="userDescribe"
+        ></textarea>
+      </div>
+      <div>
+        <app-button-with-loader
+          [buttonType]="buttonType"
+          [title]="title"
+        ></app-button-with-loader>
+        <button
+          *ngIf="!isDiaryRoute"
+          style="margin-left: 8px"
+          mat-stroked-button
+          color="error"
+          (click)="onUpdatePost()"
+        >
+          Повернутись
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

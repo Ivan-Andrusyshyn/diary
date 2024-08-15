@@ -1,0 +1,70 @@
+.header {
+  background-color: #e91e63;
+  padding: 1rem 2rem;
+  h3 {
+    font-size: 2rem;
+    color: #bdbdbd;
+    display: none;
+    @media screen and (min-width: 480px) {
+      display: block;
+    }
+  }
+}
+
+.header-container {
+  max-width: 1200px;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #bdbdbd;
+  font-weight: 600;
+  font-size: 2rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+.active {
+  color: cadetblue;
+}
+
+.nav-list {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .header-container {
+    align-items: flex-start;
+  }
+
+  .nav-list {
+    gap: 1rem;
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .nav-link {
+    font-size: 1.2rem; /* Дополнительное уменьшение размера шрифта для очень маленьких экранов */
+  }
+}

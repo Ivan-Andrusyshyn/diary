@@ -1,0 +1,17 @@
+<ng-container *ngIf="data.confirm; else errorDialog">
+  <mat-dialog-content
+    >Ви впевнені, що хочете {{ data.title }}?</mat-dialog-content
+  >
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Відмовити</button>
+    <button mat-button color="warn" (click)="onConfirm()">
+      {{ data.title }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>
+<ng-template #errorDialog>
+  <mat-dialog-content> {{ data.title }} </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Зрозуміло</button>
+  </mat-dialog-actions>
+</ng-template>

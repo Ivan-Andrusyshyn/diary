@@ -1,0 +1,14 @@
+<button
+  *ngIf="!(loading$ | async); else loading"
+  mat-stroked-button
+  color="primary"
+  [type]="buttonType"
+>
+  {{ title }}
+</button>
+
+<ng-template #loading>
+  <button mat-stroked-button disabled>
+    <mat-spinner diameter="20"> </mat-spinner>
+  </button>
+</ng-template>
