@@ -32,8 +32,6 @@ export class DiaryPostService {
       .subscribe(
         (response) => {
           if (response.status === 200) {
-            console.log(response.diaryPosts);
-
             this.diaryPosts.next(response.diaryPosts);
           } else {
             console.log('Something wrong on getDiaryPosts.');

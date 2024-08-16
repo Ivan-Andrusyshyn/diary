@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgFor } from '@angular/common';
+import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -18,16 +18,29 @@ import {
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { Observable } from 'rxjs';
 import { DiaryFormComponent } from '../../components/diary-form/diary-form.component';
+
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
+import { ButtonWithLoaderComponent } from '../../components/button-with-loader/button-with-loader.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-diary',
   standalone: true,
   imports: [
     NgFor,
+    NgIf,
     AsyncPipe,
     DatePipe,
     MatTabsModule,
     ReactiveFormsModule,
     DiaryFormComponent,
+    MatButtonModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ButtonWithLoaderComponent,
   ],
 
   templateUrl: './diary.component.html',
@@ -36,14 +49,18 @@ import { DiaryFormComponent } from '../../components/diary-form/diary-form.compo
 export class DiaryComponent {
   private fb = inject(FormBuilder);
   private diaryPostServices = inject(DiaryPostService);
-
+  private router = inject(Router);
   diaryFormGroup!: FormGroup;
 
   catsImgs: DiaryContentArray[] = catContentArray;
   dogsImgs: DiaryContentArray[] = dogContentArray;
   currentImage: DiaryContentArray = this.catsImgs[0];
   diaryPosts: Observable<ResponsedDiaryPost[]>;
+  firstFormGroup!: FormGroup;
+  isLinear: boolean = false;
 
+  screenWidth = window.innerWidth;
+  errorMessage: string = ' Напишіть кілька слів про свій день.';
   constructor() {
     this.diaryPostServices.getDiaryPosts();
     this.diaryPosts = this.diaryPostServices.diaryPosts$;
@@ -63,12 +80,13 @@ export class DiaryComponent {
       this.diaryPostServices.createDiaryPost(post);
 
       this.diaryFormGroup.reset();
+      this.router.navigate(['/diary-posts']);
     } else {
+      this.router.navigate(['/diary-posts']);
       console.log('Form is not valid!');
     }
   }
-  onChooseImage(value: DiaryContentArray, scrollTarget: HTMLElement) {
+  onChooseImage(value: DiaryContentArray) {
     this.currentImage = value;
-    scrollTarget.scrollIntoView({ behavior: 'smooth' });
   }
 }

@@ -65,14 +65,14 @@ export class DiaryPostsComponent {
 
   constructor() {
     this.diaryPostService.diaryPosts$.subscribe((response) => {
-      if (response.length === 0 && !this.search.value) {
+      if (response.length === 0 && !this.search.value.trim()) {
         this.diaryPostService.getDiaryPosts();
       }
       this.diaryPosts = response.slice();
       this.filteredPosts = response.slice();
     });
     this.search
-      .pipe(debounceTime(300), takeUntilDestroyed())
+      .pipe(debounceTime(1000), takeUntilDestroyed())
       .subscribe((searchText: string) => {
         if (searchText.trim()) {
           this.diaryPostService.getDiaryPostsByKeyword(searchText);
@@ -99,10 +99,9 @@ export class DiaryPostsComponent {
           this.datePipe.transform(post.createdAt, 'dd/MM/yyyy') ===
           formattedDate
       );
-      console.log(choosePost);
       if (choosePost.length === 0) {
         this.dialog.open(ConfirmDialogComponent, {
-          data: { title: 'Цієї дати у вас немає допису.', confirm: false },
+          data: { title: 'Цієї дати немає допису.', confirm: false },
         });
         return;
       }
