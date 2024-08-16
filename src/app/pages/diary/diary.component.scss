@@ -1,13 +1,13 @@
 .container {
   margin: 0 auto;
   max-width: 1200px;
-  margin-bottom: 2rem;
 
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
   @media screen and (min-width: 840px) {
+    margin-bottom: 2rem;
     gap: 2rem;
     flex-wrap: nowrap;
   }
@@ -33,6 +33,7 @@ ul {
 .mat-stepper-horizontal {
   background-color: transparent;
 }
+
 .mat-mdc-raised-button {
   width: 150px;
 }

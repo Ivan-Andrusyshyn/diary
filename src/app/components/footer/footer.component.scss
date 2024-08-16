@@ -15,7 +15,10 @@ ul {
 .footer {
   background-color: #e91e63;
   border-radius: 1rem;
-  padding: 3rem 0;
+  padding: 1rem 0;
+  @media screen and (min-width: 768px) {
+    padding: 2rem 0;
+  }
 }
 .footer-col {
   width: 25%;
@@ -25,7 +28,7 @@ ul {
   font-size: 18px;
   color: #ffffff;
   text-transform: capitalize;
-  margin-bottom: 35px;
+  margin-bottom: 1rem;
   font-weight: 500;
   position: relative;
 }

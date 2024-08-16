@@ -2,11 +2,13 @@
   background-color: #e91e63;
   padding: 1rem 2rem;
   h3 {
-    font-size: 2rem;
+    font-size: 1rem;
     color: #bdbdbd;
     display: none;
+    margin: 0;
     @media screen and (min-width: 480px) {
       display: block;
+      font-size: 2rem;
     }
   }
 }
@@ -23,8 +25,15 @@
   text-decoration: none;
   color: #bdbdbd;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1rem;
   transition: color 0.3s ease;
+  @media screen and (min-width: 768px) {
+    font-size: 1.5rem;
+  }
+  @media screen and (min-width: 1200px) {
+    display: block;
+    font-size: 2rem;
+  }
 }
 
 .nav-link:hover {
@@ -37,34 +46,18 @@
 
 .nav-list {
   display: flex;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
   list-style: none;
-}
-
-@media (max-width: 768px) {
-  .header {
-    padding: 1rem;
-  }
-
-  .header-container {
-    align-items: flex-start;
-  }
-
-  .nav-list {
-    gap: 1rem;
-  }
-
-  .nav-link {
-    font-size: 1.5rem;
+  @media screen and (min-width: 768px) {
+    gap: 2rem;
   }
 }
-
-@media (max-width: 480px) {
-  .header {
-    padding: 0.5rem;
-  }
-
-  .nav-link {
-    font-size: 1.2rem; /* Дополнительное уменьшение размера шрифта для очень маленьких экранов */
+.mat-mdc-raised-button {
+  width: 64px;
+  font-size: 0.8rem;
+  @media screen and (min-width: 768px) {
+    width: 74px;
+    font-size: 1rem;
   }
 }
