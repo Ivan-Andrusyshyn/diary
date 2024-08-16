@@ -21,6 +21,7 @@ export class SigninComponent {
   errorMessage: string = 'You need fill-up your email and password.';
 
   constructor() {
+    this.authService.checkIsLogged();
     this.signinForm = this.fb.group({
       email: ['s1@icloud.com', [Validators.required]],
       password: ['123456', [Validators.required]],

@@ -24,6 +24,7 @@ import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DiaryPostDetailsComponent } from '../diary-post-details/diary-post-details.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-diary-posts',
   standalone: true,
@@ -53,7 +54,8 @@ export class DiaryPostsComponent {
   private diaryPostService = inject(DiaryPostService);
   loadingService = inject(LoadingService);
   datePipe = inject(DatePipe);
-  router = inject(Router);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
 
   private search = new BehaviorSubject<string>('');
   diaryPosts!: ResponsedDiaryPost[];
@@ -97,8 +99,17 @@ export class DiaryPostsComponent {
           this.datePipe.transform(post.createdAt, 'dd/MM/yyyy') ===
           formattedDate
       );
-      if (choosePost) {
+      console.log(choosePost);
+      if (choosePost.length === 0) {
+        this.dialog.open(ConfirmDialogComponent, {
+          data: { title: 'Цієї дати у вас немає допису.', confirm: false },
+        });
+        return;
+      }
+      if (choosePost && this.screenWidth > 1200) {
         this.router.navigate(['/diary-posts', choosePost[0]._id]);
+      } else if (choosePost && this.screenWidth < 1200) {
+        this.router.navigate(['/diary-posts/mobile', choosePost[0]._id]);
       }
     } else {
       this.filteredPosts = this.diaryPosts;
