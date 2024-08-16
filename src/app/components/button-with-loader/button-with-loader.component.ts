@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -8,7 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-button-with-loader',
   standalone: true,
-  imports: [NgIf, MatButtonModule, AsyncPipe, MatProgressSpinnerModule],
+  imports: [
+    NgIf,
+    NgClass,
+    MatButtonModule,
+    AsyncPipe,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './button-with-loader.component.html',
   styleUrl: './button-with-loader.component.scss',
 })
@@ -17,7 +23,6 @@ export class ButtonWithLoaderComponent implements OnInit {
 
   @Input() buttonType: string = 'submit';
   @Input() title: string = 'Додати';
-
   loading$!: Observable<boolean>;
 
   ngOnInit(): void {

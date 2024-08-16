@@ -35,18 +35,16 @@ app.use(
 );
 app.use(
   cors({
-    origin: "https://diary-yzm6.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: ["https://diary-yzm6.vercel.app", "http://localhost:4200"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-// app.use(express.static(path.join(__dirname, "frontend")));
 
 app.use("/api/diary-posts", diaryRoutes);
 app.use("/api/diary-posts/query", diaryRoutes);
 
 app.use("/api/auth", userRoutes);
 app.use("/api/user", userRoutes);
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend", "index.html"));
-// });
+
 module.exports = app;
