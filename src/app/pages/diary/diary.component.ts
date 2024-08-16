@@ -67,7 +67,8 @@ export class DiaryComponent {
       console.log('Form is not valid!');
     }
   }
-  onChooseImage(value: DiaryContentArray) {
+  onChooseImage(value: DiaryContentArray, scrollTarget: HTMLElement) {
     this.currentImage = value;
+    scrollTarget.scrollIntoView({ behavior: 'smooth' });
   }
 }

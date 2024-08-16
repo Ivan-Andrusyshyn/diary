@@ -10,7 +10,7 @@
           <li
             *ngFor="let img of catsImgs"
             [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-            (click)="onChooseImage(img)"
+            (click)="onChooseImage(img, scrollTarget)"
           >
             <img [src]="img.imgUrl" [alt]="img.imgAlt" />
           </li>
@@ -21,7 +21,7 @@
           <li
             *ngFor="let img of dogsImgs"
             [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-            (click)="onChooseImage(img)"
+            (click)="onChooseImage(img, scrollTarget)"
           >
             <img [src]="img.imgUrl" [alt]="img.imgTitle" />
           </li>
@@ -30,9 +30,11 @@
     </mat-tab-group>
   </div>
 
-  <app-diary-form
-    (onSubmit)="onSubmitForm()"
-    [currentImage]="currentImage"
-    [formGroup]="diaryFormGroup"
-  ></app-diary-form>
+  <div #scrollTarget>
+    <app-diary-form
+      (onSubmit)="onSubmitForm()"
+      [currentImage]="currentImage"
+      [formGroup]="diaryFormGroup"
+    ></app-diary-form>
+  </div>
 </div>

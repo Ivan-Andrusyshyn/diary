@@ -17,7 +17,7 @@ export class SigninComponent {
   private authService = inject(AuthService);
 
   signinForm: FormGroup;
-  titleName: string = 'Sign-in';
+  titleName: string = 'Увійти';
   errorMessage: string = 'You need fill-up your email and password.';
 
   constructor() {
