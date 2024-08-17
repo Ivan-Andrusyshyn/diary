@@ -3,12 +3,7 @@ import { Component, inject } from '@angular/core';
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { ResponsedDiaryPost } from '../../shared/models/diary';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { LoadingService } from '../../shared/services/loading.service';
 import { DiaryCalendarComponent } from '../../components/diary-calendar/diary-calendar.component';
@@ -38,7 +33,6 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
     LoaderComponent,
     MatFormFieldModule,
     MatInputModule,
-    DiaryCalendarComponent,
     DiaryCalendarComponent,
     DiaryComponent,
     MatTabsModule,

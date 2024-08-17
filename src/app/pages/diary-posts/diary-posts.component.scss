@@ -34,13 +34,13 @@
   border-radius: 12px;
   max-width: 350px;
   min-height: 30vh;
-  max-height: 45vh;
+  max-height: 50vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   margin: 0 auto;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #f9f9f9;
+  border: 2px solid #f9f9f9;
   @media screen and (min-width: 768px) {
     min-height: 30vh;
     max-height: 65vh;
