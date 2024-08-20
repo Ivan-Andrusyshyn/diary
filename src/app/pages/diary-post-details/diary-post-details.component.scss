@@ -5,7 +5,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   gap: 1rem;
 
-  border: 2px solid #f9f9f9;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -14,7 +13,7 @@
     align-items: flex-start;
   }
   @media screen and (min-width: 1200px) {
-    padding: 2rem;
+    padding: 1.5rem;
   }
 }
 .describe-wrap {
@@ -23,7 +22,7 @@
   flex: 1;
   width: 100%;
   height: 100%;
-  border: 2px solid #f9f9f9;
+  border: 1px solid #bdbdbd;
   box-sizing: border-box;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   @media screen and (min-width: 768px) {

@@ -20,8 +20,4 @@ export class DiaryListComponent {
     this.pageUrl =
       this.screenWidth > 1200 ? this.baseUrl : `${this.baseUrl}/mobile`;
   }
-
-  getCutText(text: string) {
-    return text.length > 12 ? text.substring(0, 16) + ' більше...' : text || '';
-  }
 }

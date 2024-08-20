@@ -60,7 +60,8 @@ export class DiaryComponent {
   isLinear: boolean = false;
 
   screenWidth = window.innerWidth;
-  errorMessage: string = ' Напишіть кілька слів про свій день.';
+  errorMessage: string = 'Напишіть кілька слів про свій день.';
+
   constructor() {
     this.diaryPostServices.getDiaryPosts();
     this.diaryPosts = this.diaryPostServices.diaryPosts$;
@@ -70,6 +71,8 @@ export class DiaryComponent {
     });
   }
   onSubmitForm() {
+    console.log(this.diaryFormGroup.valid);
+
     if (this.diaryFormGroup.valid) {
       const post: DiaryPost = {
         userDescribe: this.diaryFormGroup.value.userDescribe,

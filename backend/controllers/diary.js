@@ -14,6 +14,30 @@ const getAllDiaryPosts = async (req, res, next) => {
       .json({ message: "Error fetching diary posts", status: 500 });
   }
 };
+const getDiaryPostsByMonth = async (req, res, next) => {
+  try {
+    const userId = req.userData._id;
+    const { month, year } = req.query;
+
+    const startOfMonth = new Date(year, month - 1, 1);
+    const endOfMonth = new Date(year, month, 0, 23, 59, 59);
+
+    const diaryPosts = await diaryPost.find({
+      userId,
+      createdAt: {
+        $gte: startOfMonth,
+        $lt: endOfMonth,
+      },
+    });
+
+    res.status(200).json({ diaryDatesPosts: diaryPosts, status: 200 });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching diary posts", status: 500 });
+  }
+};
 
 const getDiaryPostsByKeyword = async (req, res, next) => {
   const userId = req.userData._id;
@@ -143,4 +167,5 @@ module.exports = {
   createDiaryPost,
   getDiaryPostsByKeyword,
   updateDiaryPost,
+  getDiaryPostsByMonth,
 };

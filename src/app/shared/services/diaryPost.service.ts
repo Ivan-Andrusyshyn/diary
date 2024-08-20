@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import { DiaryPost, ResponsedDiaryPost } from '../models/diary';
+import { DiaryDatePost, DiaryPost, ResponsedDiaryPost } from '../models/diary';
 import { AuthService } from './auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
@@ -17,11 +17,38 @@ export class DiaryPostService {
   private dialog = inject(MatDialog);
 
   diaryPosts = new BehaviorSubject<ResponsedDiaryPost[]>([]);
+  diaryPostsByMonth = new BehaviorSubject<ResponsedDiaryPost[]>([]);
   diaryPosts$ = this.diaryPosts.asObservable();
 
   devUrl: string = environment.apiUrl;
   diaryUrl: string = this.devUrl + '/diary-posts';
+
   constructor() {}
+
+  getDiaryPostsByMonth(month: number, year: number) {
+    if (this.diaryPosts.value.length > 0) return;
+
+    this.http
+      .get<{
+        diaryDatesPosts: ResponsedDiaryPost[];
+        status: number;
+      }>(`${this.diaryUrl}/calendar?month=${month}&year=${year}`)
+      .subscribe(
+        (response) => {
+          console.log(response);
+
+          if (response.status === 200) {
+            this.diaryPostsByMonth.next(response.diaryDatesPosts);
+          } else {
+            console.log('Something went wrong with getDiaryPosts.');
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.authService.logout();
+        }
+      );
+  }
 
   getDiaryPosts() {
     if (this.diaryPosts.value.length > 0) return;

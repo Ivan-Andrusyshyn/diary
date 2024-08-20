@@ -1,6 +1,9 @@
 .header {
-  background-color: #e91e63;
-  padding: 1rem 2rem;
+  background-color: #e91e62a5;
+  padding: 0.8rem;
+  @media screen and (min-width: 768px) {
+    padding: 1rem 2rem;
+  }
   h3 {
     font-size: 1rem;
     color: #bdbdbd;
@@ -8,7 +11,7 @@
     margin: 0;
     @media screen and (min-width: 480px) {
       display: block;
-      font-size: 2rem;
+      font-size: 1.2rem;
     }
   }
 }
@@ -28,11 +31,11 @@
   font-size: 1rem;
   transition: color 0.3s ease;
   @media screen and (min-width: 768px) {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   @media screen and (min-width: 1200px) {
     display: block;
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 

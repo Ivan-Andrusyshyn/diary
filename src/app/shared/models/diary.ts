@@ -9,8 +9,11 @@ export interface DiaryPost {
   imgTitle: string;
   imgAlt: string;
 }
-
-export interface ResponsedDiaryPost extends DiaryPost {
+export interface DiaryDatePost {
   _id: string;
   createdAt: Date;
+}
+export interface ResponsedDiaryPost extends DiaryPost {
+  _id: string;
+  createdAt: string;
 }

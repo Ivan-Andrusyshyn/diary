@@ -31,7 +31,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'diary',
+    path: 'diary/create-post',
     loadComponent: () =>
       import('./pages/diary/diary.component').then((m) => m.DiaryComponent),
     canActivate: [authGuard],
@@ -41,6 +41,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/diary-post-details/diary-post-details.component').then(
         (m) => m.DiaryPostDetailsComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'success-diary',
+    loadComponent: () =>
+      import('./pages/success-diary/success-diary.component').then(
+        (m) => m.SuccessDiaryComponent
       ),
     canActivate: [authGuard],
   },

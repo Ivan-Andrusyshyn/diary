@@ -4,12 +4,9 @@
       <img [src]="post.imgUrl" [alt]="post.imgAlt" class="diary-post-image" />
       <div class="diary-post-details">
         <div class="diary-post-date">
-          Допис: {{ post.createdAt | date : "dd/MM/yyyy" }}
+          {{ post.createdAt | date : "dd/MM/yyyy" }}
         </div>
         <div class="diary-post-title">{{ post.imgTitle }}</div>
-        <div class="diary-post-description" *ngIf="post.userDescribe">
-          {{ getCutText(post.userDescribe) }}
-        </div>
       </div>
     </li>
   </ng-container>

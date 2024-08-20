@@ -1,0 +1,32 @@
+::ng-deep .mat-dialog-container {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+h2.mat-dialog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+button[mat-raised-button] {
+  text-transform: none;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+button[mat-raised-button][color="primary"] {
+  background-color: #1976d2;
+  color: #fff;
+}

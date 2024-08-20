@@ -94,7 +94,7 @@ export class AuthService {
         .subscribe(
           (response: any) => {
             this.settingAuthData(userData, response.token);
-            this.router.navigate(['/diary']);
+            this.router.navigate(['/diary/create-post']);
           },
           (error) => {
             console.log(error);

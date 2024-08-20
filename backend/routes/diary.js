@@ -5,10 +5,13 @@ const {
   createDiaryPost,
   updateDiaryPost,
   getDiaryPostsByKeyword,
+  getDiaryPostsByMonth,
 } = require("../controllers/diary");
 const { authenticate } = require("../middlewares/auth");
 
 const diaryRouter = express.Router();
+
+diaryRouter.get("/calendar", authenticate, getDiaryPostsByMonth);
 
 diaryRouter.put("/:id", authenticate, updateDiaryPost);
 diaryRouter.post("/", authenticate, createDiaryPost);
