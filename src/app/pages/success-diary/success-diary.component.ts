@@ -17,6 +17,7 @@ import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { MonthSelectorDialogComponent } from '../../components/month-selector-dialog/month-selector-dialog.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-success-diary',
@@ -81,7 +82,7 @@ export class SuccessDiaryComponent {
     this.diaryPostService.getDiaryPostsByMonth(month, year);
 
     this.diaryPostService.diaryPostsByMonth
-      .pipe(takeUntilDestroyed())
+      .pipe(take(2))
       .subscribe((posts: ResponsedDiaryPost[]) => {
         if (posts) {
           this.diaryPosts = posts.slice();

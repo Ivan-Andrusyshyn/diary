@@ -118,8 +118,8 @@ export class AuthService {
       this.http
         .post<ResponseAuth>(`${this.authUrl}/sign-up`, userData)
         .subscribe(
-          (response: any) => {
-            this.settingAuthData(userData, response.token);
+          (response) => {
+            this.settingAuthData(response.userData, response.token);
             this.router.navigate(['/diary/create-post']);
           },
           (error) => {
