@@ -1,5 +1,11 @@
 import { DatePipe, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ResponsedDiaryPost } from '../../shared/models/diary';
 
@@ -9,6 +15,7 @@ import { ResponsedDiaryPost } from '../../shared/models/diary';
   imports: [DatePipe, RouterLink, NgFor, NgIf],
   templateUrl: './diary-list.component.html',
   styleUrl: './diary-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryListComponent {
   @Input() posts!: ResponsedDiaryPost[];

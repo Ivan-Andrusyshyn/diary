@@ -1,11 +1,10 @@
-import { Component, inject, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Info } from 'luxon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { NgFor, NgIf } from '@angular/common';
-import { DialogModel } from '../../shared/models/dialog.model';
 
 @Component({
   selector: 'app-month-selector-dialog',
@@ -13,6 +12,7 @@ import { DialogModel } from '../../shared/models/dialog.model';
   imports: [MatDialogModule, MatSelectModule, MatButtonModule, NgFor, NgIf],
   templateUrl: './month-selector-dialog.component.html',
   styleUrl: './month-selector-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthSelectorDialogComponent {
   months = Info.months('long', { locale: 'uk' });

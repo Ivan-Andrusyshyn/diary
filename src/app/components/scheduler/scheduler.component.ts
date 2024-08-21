@@ -7,7 +7,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  inject,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { DateTime } from 'luxon';
 import { NgClass, NgFor, NgIf } from '@angular/common';
@@ -29,6 +29,7 @@ import { SchedulerPostComponent } from '../scheduler-post/scheduler-post.compone
   ],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SchedulerComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;

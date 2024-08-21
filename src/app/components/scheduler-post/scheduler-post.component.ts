@@ -1,16 +1,16 @@
 import { NgFor, NgIf } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
   Signal,
   WritableSignal,
 } from '@angular/core';
-
-import { ResponsedDiaryPost } from '../../shared/models/diary';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { DateTime } from 'luxon';
+
+import { ResponsedDiaryPost } from '../../shared/models/diary';
 
 @Component({
   selector: 'app-scheduler-post',
@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
   imports: [NgIf, NgFor, RouterLink, MatButtonModule],
   templateUrl: './scheduler-post.component.html',
   styleUrl: './scheduler-post.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SchedulerPostComponent {
   @Input() activeDayPost!: Signal<ResponsedDiaryPost[]>;

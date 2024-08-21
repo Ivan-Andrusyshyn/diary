@@ -1,5 +1,11 @@
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +14,10 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { Observable } from 'rxjs';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { catContentArray, dogContentArray } from '../diary/contentArray';
 import {
@@ -16,14 +26,9 @@ import {
   ResponsedDiaryPost,
 } from '../../shared/models/diary';
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
-import { Observable } from 'rxjs';
 import { DiaryFormComponent } from '../../components/diary-form/diary-form.component';
-
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
 import { ButtonWithLoaderComponent } from '../../components/button-with-loader/button-with-loader.component';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-diary',
   standalone: true,
@@ -45,6 +50,7 @@ import { Router } from '@angular/router';
 
   templateUrl: './diary.component.html',
   styleUrl: './diary.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;

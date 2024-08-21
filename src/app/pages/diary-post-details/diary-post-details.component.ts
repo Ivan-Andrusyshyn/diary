@@ -1,4 +1,9 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filter, map, switchMap, take } from 'rxjs';
 import { NgIf } from '@angular/common';
@@ -24,12 +29,14 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
   ],
   templateUrl: './diary-post-details.component.html',
   styleUrl: './diary-post-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryPostDetailsComponent {
   private route = inject(ActivatedRoute);
   private diaryPostsService = inject(DiaryPostService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private cd = inject(ChangeDetectorRef);
 
   diaryFormGroup: FormGroup;
   diaryPost!: ResponsedDiaryPost;
@@ -60,6 +67,7 @@ export class DiaryPostDetailsComponent {
           this.diaryFormGroup.setValue({
             userDescribe: post.userDescribe || '',
           });
+          this.cd.markForCheck();
         } else {
           console.log('Something wrang');
         }

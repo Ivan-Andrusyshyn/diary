@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -6,14 +6,17 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { DialogModel } from '../../shared/models/dialog.model';
 import { NgIf } from '@angular/common';
+
+import { DialogModel } from '../../shared/models/dialog.model';
+
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [MatDialogModule, NgIf, MatButtonModule],
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
   dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);

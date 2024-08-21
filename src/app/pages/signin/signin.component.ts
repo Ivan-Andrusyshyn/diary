@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { UserData } from '../../shared/models/userData.model';
@@ -10,6 +11,7 @@ import { UserData } from '../../shared/models/userData.model';
   imports: [AuthFormComponent],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninComponent {
   fb = inject(FormBuilder);

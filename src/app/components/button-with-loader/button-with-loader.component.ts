@@ -1,5 +1,11 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingService } from '../../shared/services/loading.service';
 import { Observable } from 'rxjs';
@@ -17,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
   templateUrl: './button-with-loader.component.html',
   styleUrl: './button-with-loader.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonWithLoaderComponent implements OnInit {
   loadingService = inject(LoadingService);

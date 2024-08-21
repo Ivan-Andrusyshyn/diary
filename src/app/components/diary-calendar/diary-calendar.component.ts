@@ -1,12 +1,19 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { ResponsedDiaryPost } from '../../shared/models/diary';
 
@@ -24,6 +31,7 @@ import { ResponsedDiaryPost } from '../../shared/models/diary';
   providers: [provideNativeDateAdapter(), DatePipe],
   templateUrl: './diary-calendar.component.html',
   styleUrl: './diary-calendar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryCalendarComponent {
   diaryPostService = inject(DiaryPostService);

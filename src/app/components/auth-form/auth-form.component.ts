@@ -1,5 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
@@ -10,10 +11,10 @@ import {
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { ButtonWithLoaderComponent } from '../button-with-loader/button-with-loader.component';
-import { LoadingService } from '../../shared/services/loading.service';
 import { Observable } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+
+import { LoadingService } from '../../shared/services/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -30,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthFormComponent implements OnInit {
   @Input() formGroup!: FormGroup;

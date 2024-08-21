@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
@@ -8,17 +9,14 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { take } from 'rxjs';
 
 import {
   DiaryContentArray,
   ResponsedDiaryPost,
 } from '../../shared/models/diary';
-import { take } from 'rxjs';
 import { ButtonWithLoaderComponent } from '../button-with-loader/button-with-loader.component';
 
 @Component({
@@ -32,6 +30,7 @@ import { ButtonWithLoaderComponent } from '../button-with-loader/button-with-loa
   ],
   templateUrl: './diary-form.component.html',
   styleUrl: './diary-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryFormComponent implements OnInit {
   @Input() formGroup!: FormGroup;
