@@ -69,8 +69,7 @@ const updateUser = async (req, res, next) => {
       userData.email = email;
     }
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      userData.password = hashedPassword;
+      userData.password = password;
     }
 
     await userData.save();
