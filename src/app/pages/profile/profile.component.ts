@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -26,6 +31,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class ProfileComponent {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
+  private cd = inject(ChangeDetectorRef);
 
   user!: UserData;
   isShow: boolean = false;
@@ -38,20 +44,23 @@ export class ProfileComponent {
       name: [''],
       password: [''],
     });
-    this.authService.user$.pipe(takeUntilDestroyed()).subscribe((resp) => {
-      if (resp) {
-        this.user = { ...resp };
+    this.authService.user$.pipe(takeUntilDestroyed()).subscribe((response) => {
+      if (response) {
+        this.user = { ...response };
         this.userFormGroup.setValue({
-          email: resp.email || '',
-          name: resp.name,
-          password: resp.password,
+          email: response.email || '',
+          name: response.name,
+          password: response.password,
         });
+        this.cd.markForCheck();
+      } else {
+        console.log('no response');
       }
     });
   }
   onSubmitForm() {
     if (this.userFormGroup.valid) {
-      // this.authService.userUpdate(this.userFormGroup.value);
+      this.authService.userUpdate(this.userFormGroup.value);
       this.isUpdate = false;
     } else {
       console.log('Value is not valid.');

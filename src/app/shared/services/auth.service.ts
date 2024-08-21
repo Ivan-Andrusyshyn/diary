@@ -74,9 +74,9 @@ export class AuthService {
         .post<ResponseAuth>(`${this.authUrl}/user/${userId}`, userData)
         .subscribe(
           (response) => {
-            console.log(response);
-
+            console.log('User updated successfully:', response);
             this.user.next(response.userData);
+            localStorage.setItem('user', JSON.stringify(response.userData));
           },
           (error) => {
             console.log(error);

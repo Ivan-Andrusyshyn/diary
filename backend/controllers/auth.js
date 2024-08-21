@@ -51,18 +51,15 @@ const login = async (req, res, next) => {
 };
 const updateUser = async (req, res, next) => {
   const { userId } = req.params;
-  const { user, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const userData = await UserReg.findById(userId);
-    console.log(userData);
-
-    if (!user) {
+    if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    if (username) {
-      userData.user = username;
+    if (name) {
+      userData.name = name;
     }
     if (email) {
       userData.email = email;
@@ -76,7 +73,7 @@ const updateUser = async (req, res, next) => {
 
     res.json({
       message: "User data updated successfully",
-      userData: user,
+      userData: { name, email, password, _id: userId },
     });
   } catch (error) {
     next(error);
