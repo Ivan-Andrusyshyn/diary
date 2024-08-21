@@ -20,6 +20,7 @@ export class DiaryPostService {
 
   diaryPosts = new BehaviorSubject<ResponsedDiaryPost[]>([]);
   diaryPostsByMonth = new BehaviorSubject<ResponsedDiaryPost[]>([]);
+
   diaryPosts$ = this.diaryPosts.asObservable();
 
   devUrl: string = environment.apiUrl;
@@ -28,8 +29,6 @@ export class DiaryPostService {
   constructor() {}
 
   getDiaryPostsByMonth(month: number, year: number) {
-    if (this.diaryPosts.value.length > 0) return;
-
     this.http
       .get<{
         diaryDatesPosts: ResponsedDiaryPost[];
@@ -37,10 +36,8 @@ export class DiaryPostService {
       }>(`${this.diaryUrl}/calendar?month=${month}&year=${year}`)
       .subscribe(
         (response) => {
-          console.log(response);
-
           if (response.status === 200) {
-            this.diaryPostsByMonth.next(response.diaryDatesPosts);
+            this.diaryPostsByMonth.next([...response.diaryDatesPosts]);
           } else {
             console.log('Something went wrong with getDiaryPosts.');
           }

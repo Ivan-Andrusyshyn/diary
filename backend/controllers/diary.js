@@ -29,6 +29,7 @@ const getDiaryPostsByMonth = async (req, res, next) => {
         $lt: endOfMonth,
       },
     });
+    console.log(diaryPosts);
 
     res.status(200).json({ diaryDatesPosts: diaryPosts, status: 200 });
   } catch (error) {

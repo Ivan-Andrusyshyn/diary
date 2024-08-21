@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   inject,
@@ -22,11 +24,13 @@ import { Router } from '@angular/router';
   imports: [SchedulerComponent],
   templateUrl: './success-diary.component.html',
   styleUrl: './success-diary.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuccessDiaryComponent {
   private diaryPostService = inject(DiaryPostService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
+  private cd = inject(ChangeDetectorRef);
 
   today: Signal<DateTime> = signal(DateTime.local());
 
@@ -80,7 +84,8 @@ export class SuccessDiaryComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((posts: ResponsedDiaryPost[]) => {
         if (posts) {
-          this.diaryPosts = posts;
+          this.diaryPosts = posts.slice();
+          this.cd.markForCheck();
           this.updateDiaryPostsMap();
           this.updateDaysOfMonth();
         } else {
