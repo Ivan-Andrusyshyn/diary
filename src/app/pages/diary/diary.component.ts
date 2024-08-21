@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -47,9 +47,9 @@ import { Router } from '@angular/router';
   styleUrl: './diary.component.scss',
 })
 export class DiaryComponent {
+  @ViewChild('scrollTarget') scrollEll!: ElementRef;
   private fb = inject(FormBuilder);
   private diaryPostServices = inject(DiaryPostService);
-  private router = inject(Router);
   diaryFormGroup!: FormGroup;
 
   catsImgs: DiaryContentArray[] = catContentArray;
@@ -71,8 +71,6 @@ export class DiaryComponent {
     });
   }
   onSubmitForm() {
-    console.log(this.diaryFormGroup.valid);
-
     if (this.diaryFormGroup.valid) {
       const post: DiaryPost = {
         userDescribe: this.diaryFormGroup.value.userDescribe,
@@ -83,13 +81,19 @@ export class DiaryComponent {
       this.diaryPostServices.createDiaryPost(post);
 
       this.diaryFormGroup.reset();
-      this.router.navigate(['/diary-posts']);
     } else {
-      this.router.navigate(['/diary-posts']);
       console.log('Form is not valid!');
     }
   }
   onChooseImage(value: DiaryContentArray) {
     this.currentImage = value;
+    if (this.scrollEll && this.scrollEll.nativeElement) {
+      this.scrollEll.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    } else {
+      console.log('scroll element is not exist.');
+    }
   }
 }

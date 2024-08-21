@@ -1,13 +1,4 @@
 <ng-container *ngIf="!isUpdate; else updateForm">
-  <button
-    *ngIf="isMobile"
-    mat-button
-    [routerLink]="['../']"
-    class="outlined-button"
-    routerLinkActive="router-link-active"
-  >
-    Повернутись
-  </button>
   <div class="post-container" *ngIf="diaryPost">
     <div class="content">
       <img
@@ -19,19 +10,13 @@
         <h3 class="post-title">{{ diaryPost.imgTitle }}</h3>
         <div class="btn_wrap">
           <button mat-raised-button (click)="onUpdatePost()">Змінити</button>
-          <button mat-raised-button (click)="onDeletePost()">
-            Видалити пост
-          </button>
+          <button mat-raised-button (click)="onDeletePost()">Видалити</button>
         </div>
       </div>
     </div>
     <div class="describe-wrap">
-      <h3>Опис:</h3>
       <p class="post-description">
-        {{
-          diaryPost.userDescribe ||
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita reprehenderit voluptatum ipsam quos quia qui tenetur aspernatur? Dolorum temporibus quae maiores praesentium laudantium natus asperiores cumque neque saepe! Eveniet architecto illum quidem odio cupiditate reprehenderit, asperiores sequi, maiores rem obcaecati saepe magnam optio a ducimus fugit nobis quibusdam aliquam nisi soluta dicta cumque enim id necessitatibus fuga? Sapiente quibusdam ratione officiis veritatis odit ab laborum explicabo nostrum illo asperiores magni quo laboriosam voluptatibus numquam, nulla commodi tempore, unde neque natus pariatur adipisci. Optio voluptate in dolorum error deserunt? Molestiae sunt rerum dolorem quidem obcaecati aliquid quas iure temporibus, fuga quia?"
-        }}
+        {{ diaryPost.userDescribe }}
       </p>
     </div>
   </div>

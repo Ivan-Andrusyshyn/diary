@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { ResponsedDiaryPost } from '../../shared/models/diary';
@@ -45,17 +45,16 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
   styleUrl: './diary-posts.component.scss',
 })
 export class DiaryPostsComponent {
+  @ViewChild('scrollTarget') scrollEll!: ElementRef;
   private diaryPostService = inject(DiaryPostService);
   loadingService = inject(LoadingService);
   datePipe = inject(DatePipe);
   private router = inject(Router);
   private dialog = inject(MatDialog);
-
   private search = new BehaviorSubject<string>('');
+
   diaryPosts!: ResponsedDiaryPost[];
   filteredPosts!: ResponsedDiaryPost[];
-
-  screenWidth = window.innerWidth;
 
   constructor() {
     this.diaryPostService.diaryPosts$.subscribe((response) => {
@@ -84,7 +83,19 @@ export class DiaryPostsComponent {
       this.search.next(searchText);
     }
   }
-
+  onScrollToTargetEl() {
+    this.scrollEll.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+  scrollToElByClick() {
+    if (this.scrollEll && this.scrollEll.nativeElement) {
+      this.onScrollToTargetEl();
+    } else {
+      console.log('scroll element is not exist.');
+    }
+  }
   filterPostsByDate(date: Date | null) {
     if (date) {
       const formattedDate = this.datePipe.transform(date, 'dd/MM/yyyy');
@@ -99,10 +110,13 @@ export class DiaryPostsComponent {
         });
         return;
       }
-      if (choosePost && this.screenWidth > 1200) {
+      if (choosePost) {
+        if (this.scrollEll && this.scrollEll.nativeElement) {
+          this.onScrollToTargetEl();
+        } else {
+          console.log('scroll element is not exist.');
+        }
         this.router.navigate(['/diary-posts', choosePost[0]._id]);
-      } else if (choosePost && this.screenWidth < 1200) {
-        this.router.navigate(['/diary-posts/mobile', choosePost[0]._id]);
       }
     } else {
       this.filteredPosts = this.diaryPosts;

@@ -14,6 +14,7 @@ import { ResponsedDiaryPost } from '../../shared/models/diary';
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { MonthSelectorDialogComponent } from '../../components/month-selector-dialog/month-selector-dialog.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-success-diary',
@@ -25,6 +26,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class SuccessDiaryComponent {
   private diaryPostService = inject(DiaryPostService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
+
   today: Signal<DateTime> = signal(DateTime.local());
 
   diaryPosts: ResponsedDiaryPost[] = [];
@@ -41,6 +44,7 @@ export class SuccessDiaryComponent {
 
   activeDayPost: Signal<ResponsedDiaryPost[]> = computed(() => {
     const activeDay = this.activeDay();
+
     if (!activeDay) return [];
     const activeDayISO = activeDay.toISODate();
     return activeDayISO ? this.diaryPostsMap[activeDayISO] : [];

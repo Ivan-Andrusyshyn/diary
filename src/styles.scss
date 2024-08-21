@@ -10,7 +10,8 @@ ul {
   display: none;
 }
 p,
-ul {
+ul,
+textarea {
   &::-webkit-scrollbar {
     width: 12px;
   }

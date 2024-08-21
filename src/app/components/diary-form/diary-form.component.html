@@ -1,4 +1,4 @@
-<div class="user-form">
+<div class="diary-form">
   <img [src]="currentImage.imgUrl" [alt]="currentImage.imgAlt" />
   <div>
     <form
@@ -14,7 +14,7 @@
           id="userDescribe"
         ></textarea>
       </div>
-      <div>
+      <div class="button-wrapper">
         <app-button-with-loader
           [buttonType]="buttonType"
           [title]="title"

@@ -1,0 +1,21 @@
+<ng-container *ngIf="activeDay(); else selectDate">
+  <ng-container *ngIf="activeDayPost()?.length; else noPosts">
+    <div
+      #scrollTarget
+      *ngFor="let post of activeDayPost(); trackBy: trackByIndex"
+    >
+      <div class="schedule-container">
+        <img [src]="post.imgUrl" alt="Diary post image" class="schedule-img" />
+        <h3 class="schedule-title">{{ post.imgTitle }}</h3>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #noPosts>
+  <div class="no-post">Цього дня публікації немає</div>
+</ng-template>
+
+<ng-template #selectDate>
+  <div class="no-post">Оберіть дату.</div>
+</ng-template>

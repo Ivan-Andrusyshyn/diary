@@ -5,20 +5,34 @@ import {
   Input,
   Output,
   EventEmitter,
+  ViewChild,
+  ElementRef,
+  inject,
 } from '@angular/core';
-import { DateTime, Info } from 'luxon';
+import { DateTime } from 'luxon';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 
 import { ResponsedDiaryPost } from '../../shared/models/diary';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { SchedulerPostComponent } from '../scheduler-post/scheduler-post.component';
 
 @Component({
   selector: 'app-scheduler',
   standalone: true,
-  imports: [NgClass, NgIf, NgFor],
+  imports: [
+    NgClass,
+    SchedulerPostComponent,
+    RouterLink,
+    RouterOutlet,
+    NgIf,
+    NgFor,
+  ],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],
 })
 export class SchedulerComponent {
+  @ViewChild('scrollTarget') scrollEll!: ElementRef;
+
   @Input() firstDayOfActiveMonth!: WritableSignal<DateTime>;
   @Input() weekDays!: Signal<string[]>;
   @Input() daysOfMonth!: { date: DateTime; post: ResponsedDiaryPost[] }[];
@@ -35,7 +49,16 @@ export class SchedulerComponent {
   trackByIndex(index: number): number {
     return index;
   }
-
+  scrollToElByClick() {
+    if (this.scrollEll && this.scrollEll.nativeElement) {
+      this.scrollEll.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    } else {
+      console.log('scroll element is not exist.');
+    }
+  }
   onPreviousMonth() {
     this.goToPreviousMonth.emit();
   }

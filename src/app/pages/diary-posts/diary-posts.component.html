@@ -27,12 +27,13 @@
           <app-diary-list
             *ngIf="filteredPosts.length > 0; else noContent"
             [posts]="filteredPosts"
+            (scrollToElByClick)="scrollToElByClick()"
           ></app-diary-list>
         </ng-container>
       </div>
     </div>
 
-    <div *ngIf="screenWidth > 1200" class="oultet-wrap">
+    <div class="oultet-wrap" #scrollTarget>
       <router-outlet />
     </div>
   </div>

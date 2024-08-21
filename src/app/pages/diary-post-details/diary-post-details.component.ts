@@ -40,13 +40,7 @@ export class DiaryPostDetailsComponent {
     this.diaryFormGroup = this.fb.group({
       userDescribe: [this.diaryPost?.userDescribe, Validators.required],
     });
-    this.route.url.pipe(take(1)).subscribe((url) => {
-      const currentPath = url.map((segment) => segment.path).join('/');
-      this.isMobile = currentPath.includes('diary-posts/mobile');
-      if (this.isMobile) {
-        this.diaryPostsService.getDiaryPosts();
-      }
-    });
+
     this.route.params
       .pipe(
         takeUntilDestroyed(),
@@ -60,6 +54,8 @@ export class DiaryPostDetailsComponent {
       )
       .subscribe((post) => {
         if (post) {
+          console.log(post);
+
           this.diaryPost = post;
           this.diaryFormGroup.setValue({
             userDescribe: post.userDescribe || '',

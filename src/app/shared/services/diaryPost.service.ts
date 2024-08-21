@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class DiaryPostService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   diaryPosts = new BehaviorSubject<ResponsedDiaryPost[]>([]);
   diaryPostsByMonth = new BehaviorSubject<ResponsedDiaryPost[]>([]);
@@ -129,6 +131,7 @@ export class DiaryPostService {
           (response) => {
             const posts = [...this.diaryPosts.value, response.createdPost];
             this.diaryPosts.next(posts);
+            this.router.navigate(['/diary-posts']);
           },
           (error) => {
             console.log(error);

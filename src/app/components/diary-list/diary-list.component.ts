@@ -12,12 +12,9 @@ import { ResponsedDiaryPost } from '../../shared/models/diary';
 })
 export class DiaryListComponent {
   @Input() posts!: ResponsedDiaryPost[];
+  @Output() scrollToElByClick = new EventEmitter();
 
-  screenWidth = window.innerWidth;
-  baseUrl: string = '/diary-posts';
-  pageUrl!: string;
-  constructor() {
-    this.pageUrl =
-      this.screenWidth > 1200 ? this.baseUrl : `${this.baseUrl}/mobile`;
+  onScrollToElByClick() {
+    this.scrollToElByClick.emit();
   }
 }

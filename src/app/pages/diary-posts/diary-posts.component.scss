@@ -21,7 +21,7 @@
       font-size: 24px;
     }
   }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 920px) {
     gap: 2rem;
 
     justify-content: flex-start;
@@ -29,7 +29,7 @@
   }
 }
 .list-wrap {
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 12px;
   max-width: 350px;
   min-height: 30vh;
@@ -43,6 +43,7 @@
   @media screen and (min-width: 768px) {
     min-height: 30vh;
     max-height: 55vh;
+    padding: 1rem;
   }
 
   @media screen and (min-width: 1200px) {

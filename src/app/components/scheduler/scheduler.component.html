@@ -47,6 +47,7 @@
             dayOfMonth.post[0].imgUrl +
             ')'
           "
+          (click)="scrollToElByClick()"
         >
           {{ dayOfMonth.date.day }}
         </div>
@@ -61,22 +62,10 @@
       <div class="date-subtitle" *ngIf="activeDay()">
         {{ activeDay()?.toLocaleString(DATE_MED) }}
       </div>
-      <ng-container *ngIf="activeDayPost()?.length; else noPost">
-        <div *ngFor="let post of activeDayPost(); trackBy: trackByIndex">
-          <div class="schedule-container">
-            <img
-              [src]="post.imgUrl"
-              alt="Diary post image"
-              class="schedule-img"
-            />
-            <h3 class="schedule-title">{{ post.imgTitle }}</h3>
-            <p class="schedule-description">{{ post.userDescribe }}</p>
-          </div>
-        </div>
-      </ng-container>
-      <ng-template #noPost>
-        <div class="no-post">Цього дня публікації немає</div>
-      </ng-template>
+      <app-scheduler-post
+        [activeDay]="activeDay"
+        [activeDayPost]="activeDayPost"
+      ></app-scheduler-post>
     </div>
   </div>
 </div>

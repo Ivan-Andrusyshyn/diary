@@ -1,6 +1,6 @@
 <div class="container">
   <div>
-    <div class="content-wrap" *ngIf="screenWidth > 1200">
+    <div class="content-wrap">
       <div class="title-wrap">
         <h2>Який настрій сьогодні ?</h2>
       </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div #scrollTarget *ngIf="screenWidth > 1200">
+  <div #scrollTarget>
     <app-diary-form
       (onSubmit)="onSubmitForm()"
       [currentImage]="currentImage"
@@ -39,69 +39,4 @@
     ></app-diary-form>
   </div>
   <!-- ===== -->
-
-  <mat-stepper
-    class="custom-stepper"
-    *ngIf="screenWidth < 1200"
-    [linear]="isLinear"
-    #stepper
-  >
-    <mat-step [stepControl]="firstFormGroup" label="Обрати настрій">
-      <mat-tab-group>
-        <mat-tab label="Котик">
-          <ul>
-            <li
-              *ngFor="let img of catsImgs"
-              [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-              (click)="onChooseImage(img)"
-            >
-              <img [src]="img.imgUrl" [alt]="img.imgAlt" />
-            </li>
-          </ul>
-        </mat-tab>
-        <mat-tab label="Песик">
-          <ul>
-            <li
-              *ngFor="let img of dogsImgs"
-              [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-              (click)="onChooseImage(img)"
-            >
-              <img [src]="img.imgUrl" [alt]="img.imgTitle" />
-            </li>
-          </ul>
-        </mat-tab>
-      </mat-tab-group>
-      <div style="margin-top: 1rem">
-        <button mat-stroked-button matStepperNext>Далі</button>
-      </div>
-    </mat-step>
-
-    <mat-step [stepControl]="diaryFormGroup" label="Записати">
-      <div style="max-width: 400px; margin: 0 auto">
-        <img
-          class="img-preview"
-          [src]="currentImage.imgUrl"
-          [alt]="currentImage.imgAlt"
-        />
-
-        <form
-          action=""
-          [formGroup]="diaryFormGroup"
-          (ngSubmit)="onSubmitForm()"
-        >
-          <textarea
-            placeholder="Напиши про свій день"
-            formControlName="userDescribe"
-            id="userDescribe"
-          ></textarea>
-        </form>
-        <div style="justify-content: center; display: flex; gap: 1rem">
-          <button mat-stroked-button matStepperPrevious>Назад</button>
-          <button mat-raised-button color="primary" type="submit">
-            Завершити
-          </button>
-        </div>
-      </div>
-    </mat-step>
-  </mat-stepper>
 </div>
