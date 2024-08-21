@@ -1,11 +1,18 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { UserData } from '../../shared/models/userData.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -20,19 +27,22 @@ import { BehaviorSubject, Observable } from 'rxjs';
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   authService = inject(AuthService);
   router = inject(Router);
   user!: UserData | null;
   isLoggedIn$!: Observable<boolean>;
+  private cd = inject(ChangeDetectorRef);
 
-  ngOnInit(): void {
-    this.isLoggedIn$ = this.authService.isLoggedIn$.asObservable();
+  constructor() {
+    this.isLoggedIn$ = this.authService.getIsLoggedIn().asObservable();
 
-    this.authService.user$.subscribe((resp) => {
+    this.authService.user$.pipe(takeUntilDestroyed()).subscribe((resp) => {
       if (resp) {
         this.user = { ...resp };
+        this.cd.markForCheck();
       } else {
         console.log('User data is no exist.');
       }

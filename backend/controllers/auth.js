@@ -49,5 +49,37 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+const updateUser = async (req, res, next) => {
+  const { userId } = req.params;
+  const { user, email, password } = req.body;
 
-module.exports = { register, login };
+  try {
+    const userData = await UserReg.findById(userId);
+    console.log(userData);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) {
+      userData.user = username;
+    }
+    if (email) {
+      userData.email = email;
+    }
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      userData.password = hashedPassword;
+    }
+
+    await userData.save();
+
+    res.json({
+      message: "User data updated successfully",
+      userData: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { register, login, updateUser };

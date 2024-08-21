@@ -18,7 +18,7 @@ export class AuthService {
 
   user = new BehaviorSubject<UserData | null>(null);
   user$ = this.user.asObservable();
-  isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   message = new BehaviorSubject('');
 
@@ -32,7 +32,7 @@ export class AuthService {
     }
   }
   getIsLoggedIn() {
-    return this.isLoggedIn$.value;
+    return this.isLoggedIn$;
   }
   checkIsLogged() {
     this.http
@@ -42,12 +42,12 @@ export class AuthService {
           this.message.next(response.message);
           this.isLoggedIn$.next(true);
           this.router.navigate(['/profile']);
-          console.log(response.message);
         },
         (error) => {
           this.isLoggedIn$.next(false);
+          console.log(error);
+
           this.router.navigate(['/sign-in']);
-          console.error('Error checking login status:', error);
         }
       );
   }
@@ -62,6 +62,31 @@ export class AuthService {
     }
   }
 
+  userUpdate(userData: UserData) {
+    const userId = this.user.value?._id;
+    if (!userId) {
+      console.log('id is not exist.');
+      return;
+    }
+
+    if (userData) {
+      this.http
+        .post<ResponseAuth>(`${this.authUrl}/user/${userId}`, userData)
+        .subscribe(
+          (response) => {
+            console.log(response);
+
+            this.user.next(response.userData);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } else {
+      console.log('Can not update user data.');
+    }
+  }
+
   signIn(userData: UserData) {
     if (userData) {
       this.http
@@ -69,6 +94,7 @@ export class AuthService {
         .subscribe(
           (response) => {
             const userData = {
+              _id: response.userData._id,
               name: response.userData.name,
               email: response.userData.email,
               password: response.userData.password,

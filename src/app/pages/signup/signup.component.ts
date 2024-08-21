@@ -24,9 +24,9 @@ export class SignupComponent {
 
   constructor() {
     this.signupForm = this.fb.group({
-      name: ['Ivan', [Validators.required]],
+      name: ['Ivan', [Validators.required, Validators.maxLength(14)]],
       email: ['s1@icloud.com', [Validators.required]],
-      password: ['123456', [Validators.required]],
+      password: ['123456', [Validators.required, Validators.maxLength(10)]],
     });
   }
 

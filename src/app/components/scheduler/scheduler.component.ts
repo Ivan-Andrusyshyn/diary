@@ -8,9 +8,10 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { DateTime } from 'luxon';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 
 import { ResponsedDiaryPost } from '../../shared/models/diary';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -26,6 +27,7 @@ import { SchedulerPostComponent } from '../scheduler-post/scheduler-post.compone
     RouterOutlet,
     NgIf,
     NgFor,
+    AsyncPipe,
   ],
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss'],

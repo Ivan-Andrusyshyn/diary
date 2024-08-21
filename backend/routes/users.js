@@ -1,7 +1,7 @@
 const express = require("express");
 const UserReg = require("../models/User");
 const { authenticate } = require("../middlewares/auth");
-const { register, login } = require("../controllers/auth");
+const { register, login, updateUser } = require("../controllers/auth");
 
 const usersRouter = express.Router();
 
@@ -20,5 +20,6 @@ usersRouter.get("/profile", authenticate, (req, res) => {
 usersRouter.post("/sign-up", register);
 
 usersRouter.post("/sign-in", login);
+usersRouter.post("/user/:userId", updateUser);
 
 module.exports = usersRouter;
