@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { ResponseAuth, UserData } from '../models/userData.model';
-import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -16,9 +16,10 @@ export class AuthService {
   devUrl: string = environment.apiUrl;
   authUrl: string = this.devUrl + '/auth';
 
-  user = new BehaviorSubject<UserData | null>(null);
-  user$ = this.user.asObservable();
+  private user = new BehaviorSubject<UserData | null>(null);
   private isLoggedIn$ = new BehaviorSubject<boolean>(false);
+
+  user$ = this.user.asObservable();
 
   message = new BehaviorSubject('');
 
@@ -31,6 +32,7 @@ export class AuthService {
       this.user.next(parseUserData);
     }
   }
+
   getIsLoggedIn() {
     return this.isLoggedIn$;
   }
@@ -45,8 +47,6 @@ export class AuthService {
         },
         (error) => {
           this.isLoggedIn$.next(false);
-          console.log(error);
-
           this.router.navigate(['/sign-in']);
         }
       );

@@ -11,8 +11,9 @@ import { AuthService } from '../../shared/services/auth.service';
 import { UserData } from '../../shared/models/userData.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DiaryPostService } from '../../shared/services/diaryPost.service';
 
 @Component({
   selector: 'app-header',
@@ -30,14 +31,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  authService = inject(AuthService);
-  router = inject(Router);
+  private authService = inject(AuthService);
+  private cd = inject(ChangeDetectorRef);
+  private diaryService = inject(DiaryPostService);
+
   user!: UserData | null;
   isLoggedIn$!: Observable<boolean>;
-  private cd = inject(ChangeDetectorRef);
+  loading$!: Observable<boolean>;
 
   constructor() {
-    this.isLoggedIn$ = this.authService.getIsLoggedIn().asObservable();
+    this.isLoggedIn$ = this.authService.getIsLoggedIn();
 
     this.authService.user$.pipe(takeUntilDestroyed()).subscribe((resp) => {
       if (resp) {
@@ -50,8 +53,8 @@ export class HeaderComponent {
   }
 
   onLogout() {
+    this.diaryService.cleanAllDiaryInfoOnClient();
     this.authService.logout();
     this.user = null;
-    this.router.navigate(['']);
   }
 }

@@ -20,13 +20,17 @@ export class DiaryPostService {
 
   diaryPosts = new BehaviorSubject<ResponsedDiaryPost[]>([]);
   diaryPostsByMonth = new BehaviorSubject<ResponsedDiaryPost[]>([]);
-
   diaryPosts$ = this.diaryPosts.asObservable();
 
   devUrl: string = environment.apiUrl;
   diaryUrl: string = this.devUrl + '/diary-posts';
 
   constructor() {}
+
+  cleanAllDiaryInfoOnClient() {
+    this.diaryPosts.next([]);
+    this.diaryPostsByMonth.next([]);
+  }
 
   getDiaryPostsByMonth(month: number, year: number) {
     this.http
