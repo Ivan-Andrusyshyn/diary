@@ -1,22 +1,24 @@
 <ng-container *ngIf="!isUpdate; else updateForm">
-  <div class="post-container" *ngIf="diaryPost">
+  <div class="post-container" *ngIf="diaryPost | async as postDetails">
     <div class="content">
       <img
-        [src]="diaryPost.imgUrl"
-        [alt]="diaryPost.imgAlt"
+        [src]="postDetails.imgUrl"
+        [alt]="postDetails.imgAlt"
         class="post-image"
       />
       <div class="post-details">
-        <h3 class="post-title">{{ diaryPost.imgTitle }}</h3>
+        <h3 class="post-title">{{ postDetails.imgTitle }}</h3>
         <div class="btn_wrap">
-          <button mat-raised-button (click)="onUpdatePost()">Змінити</button>
+          <button mat-raised-button (click)="onUpdatePost(postDetails)">
+            Змінити
+          </button>
           <button mat-raised-button (click)="onDeletePost()">Видалити</button>
         </div>
       </div>
     </div>
     <div class="describe-wrap">
       <p class="post-description">
-        {{ diaryPost.userDescribe }}
+        {{ postDetails.userDescribe }}
       </p>
     </div>
   </div>
@@ -26,6 +28,6 @@
     [formGroup]="diaryFormGroup"
     (onSubmit)="onSubmitForm()"
     (hideUpdateForm)="onUpdatePost()"
-    [currentImage]="diaryPost"
+    [currentPost]="diaryPost | async"
   ></app-diary-form>
 </ng-template>

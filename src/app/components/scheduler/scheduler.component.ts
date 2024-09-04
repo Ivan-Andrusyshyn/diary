@@ -13,16 +13,19 @@ import {
 import { DateTime } from 'luxon';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 
-import { ResponsedDiaryPost } from '../../shared/models/diary';
+import { ResponseDiaryPost } from '../../shared/models/diary';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { SchedulerPostComponent } from '../scheduler-post/scheduler-post.component';
+import { SuccessCalendarService } from '../../shared/services/success-calendar.service';
+import { Observable } from 'rxjs';
+import { SchedulerCellComponent } from '../scheduler-cell/scheduler-cell.component';
 
 @Component({
   selector: 'app-scheduler',
   standalone: true,
   imports: [
-    NgClass,
     SchedulerPostComponent,
+    SchedulerCellComponent,
     RouterLink,
     RouterOutlet,
     NgIf,
@@ -36,18 +39,17 @@ import { SchedulerPostComponent } from '../scheduler-post/scheduler-post.compone
 export class SchedulerComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;
 
-  @Input() firstDayOfActiveMonth!: WritableSignal<DateTime>;
-  @Input() weekDays!: Signal<string[]>;
-  @Input() daysOfMonth!: { date: DateTime; post: ResponsedDiaryPost[] }[];
-  @Input() activeDay!: WritableSignal<DateTime | null>;
-  @Input() activeDayPost!: Signal<ResponsedDiaryPost[]>;
-
-  @Output() goToPreviousMonth = new EventEmitter<void>();
-  @Output() goToNextMonth = new EventEmitter<void>();
-  @Output() goToToday = new EventEmitter<void>();
-  @Output() openMonthSelector = new EventEmitter<void>();
+  @Input() firstDayOfActiveMonth!: DateTime;
+  @Input() daysOfMonth!: { date: DateTime; post: ResponseDiaryPost[] }[];
+  @Input() activeDayPost!: ResponseDiaryPost[];
 
   DATE_MED = DateTime.DATE_MED;
+
+  private successCalendarService = inject(SuccessCalendarService);
+  activeDay!: Observable<DateTime | null>;
+  constructor() {
+    this.activeDay = this.successCalendarService.activeDay$;
+  }
 
   trackByIndex(index: number): number {
     return index;
@@ -62,19 +64,11 @@ export class SchedulerComponent {
       console.log('scroll element is not exist.');
     }
   }
-  onPreviousMonth() {
-    this.goToPreviousMonth.emit();
-  }
+  onSetActiveDay = (day: DateTime) => {
+    this.successCalendarService.setActiveDay(day);
+  };
 
-  onNextMonth() {
-    this.goToNextMonth.emit();
-  }
-
-  onToday() {
-    this.goToToday.emit();
-  }
-
-  onOpenMonthSelector() {
-    this.openMonthSelector.emit();
-  }
+  getInactiveCell = (month: number): boolean => {
+    return month !== this.firstDayOfActiveMonth.month;
+  };
 }

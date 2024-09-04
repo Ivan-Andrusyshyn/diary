@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
 
     await user.save();
     const token = jwt.sign({ userId: user._id }, process.env.PASSWORD, {
-      expiresIn: "48 hour",
+      expiresIn: "24h",
     });
 
     res.json({
@@ -41,7 +41,7 @@ const login = async (req, res, next) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.PASSWORD, {
-      expiresIn: "48h",
+      expiresIn: "24h",
     });
 
     res.json({

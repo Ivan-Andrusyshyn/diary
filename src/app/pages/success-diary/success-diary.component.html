@@ -1,13 +1,16 @@
 <div>
   <app-scheduler
     [firstDayOfActiveMonth]="firstDayOfActiveMonth"
-    [weekDays]="weekDays"
     [daysOfMonth]="daysOfMonth"
-    [activeDay]="activeDay"
     [activeDayPost]="activeDayPost"
-    (goToPreviousMonth)="goToPreviousMonth()"
-    (goToNextMonth)="goToNextMonth()"
-    (goToToday)="goToToday()"
-    (openMonthSelector)="openMonthSelector()"
-  ></app-scheduler>
+  >
+    <app-scheduler-headline
+      [firstDayOfActiveMonth]="firstDayOfActiveMonth"
+      [weekDays]="weekDays"
+      (openMonthSelector)="openMonthSelector()"
+      (onPreviousMonth)="goToPreviousMonth()"
+      (onNextMonth)="goToNextMonth()"
+      (goToToday)="goToToday()"
+    ></app-scheduler-headline>
+  </app-scheduler>
 </div>

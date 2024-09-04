@@ -13,7 +13,20 @@ export interface DiaryDatePost {
   _id: string;
   createdAt: Date;
 }
-export interface ResponsedDiaryPost extends DiaryPost {
+export interface ResponseDiaryPost extends DiaryPost {
   _id: string;
   createdAt: string;
+}
+export interface PaginatedDiaryResponse {
+  diaryList: ResponseDiaryPost[];
+  status: number;
+  totalItems: number;
+  message: string;
+  totalPages: number;
+  page: number;
+  limit: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
 }

@@ -1,0 +1,9 @@
+<ul>
+  <li
+    *ngFor="let picture of pictures"
+    [class.currantImage]="picture.imgUrl === currentImage.imgUrl"
+    (click)="handleChangeImg(picture)"
+  >
+    <img [src]="picture.imgUrl" [alt]="picture.imgTitle" />
+  </li>
+</ul>

@@ -2,27 +2,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  computed,
   inject,
-  Signal,
-  signal,
-  WritableSignal,
 } from '@angular/core';
-import { DateTime, Info, Interval } from 'luxon';
+import { DateTime, Info } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SchedulerComponent } from '../../components/scheduler/scheduler.component';
-import { ResponsedDiaryPost } from '../../shared/models/diary';
+import { ResponseDiaryPost } from '../../shared/models/diary';
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { MonthSelectorDialogComponent } from '../../components/month-selector-dialog/month-selector-dialog.component';
+import { SuccessCalendarService } from '../../shared/services/success-calendar.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { SchedulerHeadlineComponent } from '../../components/scheduler-headline/scheduler-headline.component';
 
 @Component({
   selector: 'app-success-diary',
   standalone: true,
-  imports: [SchedulerComponent],
+  imports: [SchedulerComponent, SchedulerHeadlineComponent],
   templateUrl: './success-diary.component.html',
   styleUrl: './success-diary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,109 +26,99 @@ import { take } from 'rxjs';
 export class SuccessDiaryComponent {
   private diaryPostService = inject(DiaryPostService);
   private dialog = inject(MatDialog);
-  private router = inject(Router);
   private cd = inject(ChangeDetectorRef);
+  private successCalendarService = inject(SuccessCalendarService);
 
-  today: Signal<DateTime> = signal(DateTime.local());
+  today: DateTime = DateTime.local();
+  weekDays: string[] = Info.weekdays('short');
 
-  diaryPosts: ResponsedDiaryPost[] = [];
-  diaryPostsMap: { [date: string]: ResponsedDiaryPost[] } = {};
+  diaryPosts: ResponseDiaryPost[] = [];
 
-  firstDayOfActiveMonth: WritableSignal<DateTime> = signal(
-    this.today().startOf('month')
-  );
+  firstDayOfActiveMonth!: DateTime;
 
-  activeDay: WritableSignal<DateTime | null> = signal(null);
-  weekDays: Signal<string[]> = signal(Info.weekdays('short'));
+  activeDay!: DateTime;
+  daysOfMonth: { date: DateTime; post: ResponseDiaryPost[] }[] = [];
 
-  daysOfMonth: { date: DateTime; post: ResponsedDiaryPost[] }[] = [];
+  activeDayPost!: ResponseDiaryPost[];
 
-  activeDayPost: Signal<ResponsedDiaryPost[]> = computed(() => {
-    const activeDay = this.activeDay();
-
-    if (!activeDay) return [];
-    const activeDayISO = activeDay.toISODate();
-    return activeDayISO ? this.diaryPostsMap[activeDayISO] : [];
-  });
   constructor() {
+    this.successCalendarService.firstDayOfActiveMonth$
+      .pipe(takeUntilDestroyed())
+      .subscribe((value: DateTime) => {
+        this.firstDayOfActiveMonth = value;
+      });
+    this.diaryPostService.diaryPostsByMonth
+      .pipe(takeUntilDestroyed())
+      .subscribe((posts: ResponseDiaryPost[]) => {
+        if (posts) {
+          this.setDaysOfMonth(posts);
+        } else {
+          console.log('No diary posts found.');
+        }
+      });
+    this.successCalendarService.activeDay$
+      .pipe(takeUntilDestroyed())
+      .subscribe((day) => {
+        if (day) {
+          this.setActiveDayPost(day);
+        } else {
+          console.log('The day is not exist.');
+        }
+      });
+
     this.loadDiaryPosts();
   }
   openMonthSelector(): void {
     const dialogRef = this.dialog.open(MonthSelectorDialogComponent, {
-      data: { currentMonth: this.firstDayOfActiveMonth().month },
+      data: { currentMonth: this.firstDayOfActiveMonth.month },
     });
 
     dialogRef.afterClosed().subscribe((selectedMonth) => {
       if (selectedMonth) {
-        this.firstDayOfActiveMonth.set(
-          this.firstDayOfActiveMonth().set({ month: selectedMonth })
+        this.successCalendarService.setFirstDayOfActiveMonth(
+          this.firstDayOfActiveMonth.set({ month: selectedMonth })
         );
         this.loadDiaryPosts();
       }
     });
   }
+
   goToPreviousMonth(): void {
-    this.firstDayOfActiveMonth.set(
-      this.firstDayOfActiveMonth().minus({ month: 1 })
+    this.successCalendarService.setFirstDayOfActiveMonth(
+      this.firstDayOfActiveMonth.minus({ month: 1 })
     );
     this.loadDiaryPosts();
   }
   private loadDiaryPosts(): void {
     const { month, year } = this.getCurrentMonthAndYear();
     this.diaryPostService.getDiaryPostsByMonth(month, year);
-
-    this.diaryPostService.diaryPostsByMonth
-      .pipe(take(2))
-      .subscribe((posts: ResponsedDiaryPost[]) => {
-        if (posts) {
-          this.diaryPosts = posts.slice();
-          this.cd.markForCheck();
-          this.updateDiaryPostsMap();
-          this.updateDaysOfMonth();
-        } else {
-          console.log('No diary posts found.');
-        }
-      });
   }
 
   goToToday(): void {
-    this.firstDayOfActiveMonth.set(this.today().startOf('month'));
+    this.firstDayOfActiveMonth = this.today.startOf('month');
     this.loadDiaryPosts();
   }
   goToNextMonth(): void {
-    this.firstDayOfActiveMonth.set(
-      this.firstDayOfActiveMonth().plus({ month: 1 })
+    this.successCalendarService.setFirstDayOfActiveMonth(
+      this.firstDayOfActiveMonth.plus({ month: 1 })
     );
+
     this.loadDiaryPosts();
   }
-
-  private updateDaysOfMonth(): void {
-    const firstDay = this.firstDayOfActiveMonth();
-    const lastDay = firstDay.endOf('month').endOf('week');
-
-    this.daysOfMonth = Interval.fromDateTimes(firstDay.startOf('week'), lastDay)
-      .splitBy({ day: 1 })
-      .map((interval) => {
-        const date = interval.start as DateTime;
-        const dateISO = date.toISODate() ?? '';
-        const post = this.diaryPostsMap[dateISO] ?? [];
-        return { date, post };
-      });
-  }
+  private setDaysOfMonth = (posts: ResponseDiaryPost[]) => {
+    this.successCalendarService.updateDiaryPostsMap(posts);
+    this.daysOfMonth = this.successCalendarService.getDaysOfMonth();
+    this.cd.markForCheck();
+  };
+  private setActiveDayPost = (day: DateTime) => {
+    this.activeDay = day;
+    const activeDayISO = day.toISODate();
+    this.activeDayPost = activeDayISO
+      ? this.successCalendarService.getMapsDiaryPosts()[activeDayISO]
+      : [];
+  };
   private getCurrentMonthAndYear(): { month: number; year: number } {
-    const date = this.firstDayOfActiveMonth();
+    const date = this.firstDayOfActiveMonth;
     return { month: date.month, year: date.year };
-  }
-  private updateDiaryPostsMap(): void {
-    this.diaryPostsMap = this.diaryPosts.reduce((map, post) => {
-      const dateStr = DateTime.fromISO(post.createdAt).toISODate() ?? '';
-      if (dateStr) {
-        if (!map[dateStr]) {
-          map[dateStr] = [];
-        }
-        map[dateStr].push(post);
-      }
-      return map;
-    }, {} as { [date: string]: ResponsedDiaryPost[] });
   }
 }

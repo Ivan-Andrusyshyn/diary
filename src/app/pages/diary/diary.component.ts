@@ -23,11 +23,11 @@ import { catContentArray, dogContentArray } from '../diary/contentArray';
 import {
   DiaryContentArray,
   DiaryPost,
-  ResponsedDiaryPost,
+  ResponseDiaryPost,
 } from '../../shared/models/diary';
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { DiaryFormComponent } from '../../components/diary-form/diary-form.component';
-import { ButtonWithLoaderComponent } from '../../components/button-with-loader/button-with-loader.component';
+import { DiaryGalleryComponent } from '../../components/diary-gallery/diary-gallery.component';
 
 @Component({
   selector: 'app-diary',
@@ -44,8 +44,8 @@ import { ButtonWithLoaderComponent } from '../../components/button-with-loader/b
     MatStepperModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    DiaryGalleryComponent,
     MatInputModule,
-    ButtonWithLoaderComponent,
   ],
 
   templateUrl: './diary.component.html',
@@ -54,14 +54,14 @@ import { ButtonWithLoaderComponent } from '../../components/button-with-loader/b
 })
 export class DiaryComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;
+
   private fb = inject(FormBuilder);
   private diaryPostServices = inject(DiaryPostService);
   diaryFormGroup!: FormGroup;
 
-  catsImgs: DiaryContentArray[] = catContentArray;
-  dogsImgs: DiaryContentArray[] = dogContentArray;
-  currentImage: DiaryContentArray = this.catsImgs[0];
-  diaryPosts: Observable<ResponsedDiaryPost[]>;
+  catsGallery: DiaryContentArray[] = catContentArray;
+  dogsGallery: DiaryContentArray[] = dogContentArray;
+  currentImage: DiaryContentArray = this.catsGallery[0];
   firstFormGroup!: FormGroup;
   isLinear: boolean = false;
 
@@ -69,9 +69,6 @@ export class DiaryComponent {
   errorMessage: string = 'Напишіть кілька слів про свій день.';
 
   constructor() {
-    this.diaryPostServices.getDiaryPosts();
-    this.diaryPosts = this.diaryPostServices.diaryPosts$;
-
     this.diaryFormGroup = this.fb.group({
       userDescribe: ['', Validators.required],
     });

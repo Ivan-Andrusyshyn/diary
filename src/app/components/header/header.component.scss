@@ -14,6 +14,12 @@
       font-size: 1.2rem;
     }
   }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: space-between;
+  }
 }
 
 .header-container {
@@ -24,38 +30,6 @@
   align-items: center;
 }
 
-.nav-link {
-  text-decoration: none;
-  color: #bdbdbd;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-  @media screen and (min-width: 768px) {
-    font-size: 1.2rem;
-  }
-  @media screen and (min-width: 1200px) {
-    display: block;
-    font-size: 1.5rem;
-  }
-}
-
-.nav-link:hover {
-  color: #ffffff;
-}
-
-.active {
-  color: cadetblue;
-}
-
-.nav-list {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  list-style: none;
-  @media screen and (min-width: 768px) {
-    gap: 2rem;
-  }
-}
 .mat-mdc-raised-button {
   width: 64px;
   font-size: 0.8rem;

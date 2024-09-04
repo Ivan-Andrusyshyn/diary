@@ -1,0 +1,24 @@
+<div
+  [ngClass]="{
+    'calendar-grid-cell': true,
+    'calendar-grid-cell-active': isActiveCell,
+    'calendar-grid-cell-inactive': isInactiveCell
+  }"
+  (click)="handleActiveDay(dayOfMonth.date)"
+>
+  <div
+    *ngIf="dayOfMonth.post[0]; else noPostImage"
+    class="bg-container"
+    [style.backgroundImage]="
+      'linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(' +
+      dayOfMonth.post[0].imgUrl +
+      ')'
+    "
+    (click)="onScrollToElByClick()"
+  >
+    {{ dayOfMonth.date.day }}
+  </div>
+  <ng-template #noPostImage>
+    {{ dayOfMonth.date.day }}
+  </ng-template>
+</div>

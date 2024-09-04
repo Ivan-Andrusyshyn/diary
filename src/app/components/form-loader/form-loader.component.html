@@ -1,14 +1,15 @@
 <button
   *ngIf="!(loading$ | async); else loading"
+  class="w-100"
+  [color]="color"
+  type="submit"
   mat-stroked-button
-  color="primary"
-  [type]="buttonType"
 >
   {{ title }}
 </button>
 
 <ng-template #loading>
-  <button mat-stroked-button disabled>
-    <mat-spinner diameter="20"> </mat-spinner>
+  <button class="w-100" disabled mat-stroked-button>
+    <mat-spinner diameter="20"></mat-spinner>
   </button>
 </ng-template>

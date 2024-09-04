@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { ResponseAuth, UserData } from '../models/userData.model';
 import { environment } from '../../environments/environment';
+import { AuthUrls } from '../constants/urls/authUrls';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class AuthService {
   authUrl: string = this.devUrl + '/auth';
 
   private user = new BehaviorSubject<UserData | null>(null);
-  private isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private isLoggedIn = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.isLoggedIn.asObservable();
 
   user$ = this.user.asObservable();
 
@@ -25,7 +27,6 @@ export class AuthService {
 
   constructor() {
     const userData = localStorage.getItem('user');
-    this.isLoggedIn$.next(!!localStorage.getItem('token'));
 
     if (userData) {
       const parseUserData = JSON.parse(userData);
@@ -33,21 +34,20 @@ export class AuthService {
     }
   }
 
-  getIsLoggedIn() {
-    return this.isLoggedIn$;
-  }
   checkIsLogged() {
     this.http
-      .get<{ message: string; userData: UserData }>(`${this.authUrl}/profile`)
+      .get<{ message: string; userData: UserData }>(
+        `${this.authUrl}${AuthUrls.PROFILE}`
+      )
       .subscribe(
         (response) => {
           this.message.next(response.message);
-          this.isLoggedIn$.next(true);
-          this.router.navigate(['/profile']);
+          this.isLoggedIn.next(true);
         },
         (error) => {
-          this.isLoggedIn$.next(false);
-          this.router.navigate(['/sign-in']);
+          console.log(error);
+
+          this.logout();
         }
       );
   }
@@ -65,16 +65,18 @@ export class AuthService {
   userUpdate(userData: UserData) {
     const userId = this.user.value?._id;
     if (!userId) {
-      console.log('id is not exist.');
+      console.log('Id is not exist.');
       return;
     }
 
     if (userData) {
       this.http
-        .post<ResponseAuth>(`${this.authUrl}/user/${userId}`, userData)
+        .post<ResponseAuth>(
+          `${this.authUrl}${AuthUrls.USER_UPDATE}/${userId}`,
+          userData
+        )
         .subscribe(
           (response) => {
-            console.log('User updated successfully:', response);
             this.user.next(response.userData);
             localStorage.setItem('user', JSON.stringify(response.userData));
           },
@@ -90,9 +92,11 @@ export class AuthService {
   signIn(userData: UserData) {
     if (userData) {
       this.http
-        .post<ResponseAuth>(`${this.authUrl}/sign-in`, userData)
+        .post<ResponseAuth>(`${this.authUrl}${AuthUrls.SIGN_IN}`, userData)
         .subscribe(
           (response) => {
+            this.router.navigate(['/profile']);
+
             const userData = {
               _id: response.userData._id,
               name: response.userData.name,
@@ -100,8 +104,6 @@ export class AuthService {
               password: response.userData.password,
             };
             this.settingAuthData(userData, response.token);
-
-            this.router.navigate(['/profile']);
           },
           (error) => {
             console.log(error);
@@ -116,11 +118,11 @@ export class AuthService {
   signUp(userData: UserData) {
     if (userData) {
       this.http
-        .post<ResponseAuth>(`${this.authUrl}/sign-up`, userData)
+        .post<ResponseAuth>(`${this.authUrl}${AuthUrls.SIGN_UP}`, userData)
         .subscribe(
           (response) => {
             this.settingAuthData(response.userData, response.token);
-            this.router.navigate(['/diary/create-post']);
+            this.router.navigate(['/profile']);
           },
           (error) => {
             console.log(error);
@@ -131,7 +133,7 @@ export class AuthService {
     }
   }
   settingAuthData(userData: UserData, token: string) {
-    this.isLoggedIn$.next(true);
+    this.isLoggedIn.next(true);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     this.user.next({ ...userData });
@@ -139,7 +141,7 @@ export class AuthService {
 
   logout() {
     this.user.next(null);
-    this.isLoggedIn$.next(false);
+    this.isLoggedIn.next(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.router.navigate(['/sign-in']);

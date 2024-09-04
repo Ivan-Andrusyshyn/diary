@@ -1,5 +1,5 @@
 <div class="diary-form">
-  <img [src]="currentImage.imgUrl" [alt]="currentImage.imgAlt" />
+  <img [src]="currentPost.imgUrl" [alt]="currentPost.imgAlt" />
   <div>
     <form
       class="form-group"
@@ -7,7 +7,7 @@
       (ngSubmit)="onSubmitForm()"
     >
       <div>
-        <label for="userDescribe">{{ currentImage.imgTitle }}</label>
+        <label for="userDescribe">{{ currentPost.imgTitle }}</label>
         <textarea
           placeholder="Як ти став сьогодні таким котиком ?"
           formControlName="userDescribe"
@@ -15,10 +15,7 @@
         ></textarea>
       </div>
       <div class="button-wrapper">
-        <app-button-with-loader
-          [buttonType]="buttonType"
-          [title]="title"
-        ></app-button-with-loader>
+        <app-form-loader [title]="'Додати'"></app-form-loader>
         <button
           *ngIf="!isDiaryRoute"
           style="margin-left: 8px"

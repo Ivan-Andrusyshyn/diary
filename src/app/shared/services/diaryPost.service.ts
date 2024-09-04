@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { DiaryDatePost, DiaryPost, ResponsedDiaryPost } from '../models/diary';
+import {
+  DiaryPost,
+  PaginatedDiaryResponse,
+  ResponseDiaryPost,
+} from '../models/diary';
 import { AuthService } from './auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
@@ -18,9 +22,12 @@ export class DiaryPostService {
   private dialog = inject(MatDialog);
   private router = inject(Router);
 
-  diaryPosts = new BehaviorSubject<ResponsedDiaryPost[]>([]);
-  diaryPostsByMonth = new BehaviorSubject<ResponsedDiaryPost[]>([]);
+  diaryPosts = new BehaviorSubject<ResponseDiaryPost[]>([]);
+  diaryTotalLength = new BehaviorSubject(0);
+  diaryPostsByMonth = new BehaviorSubject<ResponseDiaryPost[]>([]);
+  diaryPostsByMonth$ = this.diaryPostsByMonth.asObservable();
   diaryPosts$ = this.diaryPosts.asObservable();
+  diaryTotalLength$ = this.diaryTotalLength.asObservable();
 
   devUrl: string = environment.apiUrl;
   diaryUrl: string = this.devUrl + '/diary-posts';
@@ -35,7 +42,7 @@ export class DiaryPostService {
   getDiaryPostsByMonth(month: number, year: number) {
     this.http
       .get<{
-        diaryDatesPosts: ResponsedDiaryPost[];
+        diaryDatesPosts: ResponseDiaryPost[];
         status: number;
       }>(`${this.diaryUrl}/calendar?month=${month}&year=${year}`)
       .subscribe(
@@ -53,16 +60,21 @@ export class DiaryPostService {
       );
   }
 
-  getDiaryPosts() {
-    if (this.diaryPosts.value.length > 0) return;
+  getDiaryPosts(pageIndex: number, pageSize: number) {
+    const params = {
+      page: pageIndex.toString(),
+      limit: pageSize.toString(),
+    };
+
     this.http
-      .get<{ diaryPosts: ResponsedDiaryPost[]; status: number }>(
-        `${this.diaryUrl}`
-      )
+      .get<PaginatedDiaryResponse>(`${this.diaryUrl}`, {
+        params,
+      })
       .subscribe(
         (response) => {
           if (response.status === 200) {
-            this.diaryPosts.next(response.diaryPosts);
+            this.diaryPosts.next(response.diaryList);
+            this.diaryTotalLength.next(response.totalItems);
           } else {
             console.log('Something wrong on getDiaryPosts.');
           }
@@ -78,10 +90,9 @@ export class DiaryPostService {
     const url = `${this.diaryUrl}/query?keyword=${encodeURIComponent(keyword)}`;
 
     this.http
-      .get<{ diaryPosts: ResponsedDiaryPost[]; status: number }>(url)
+      .get<{ diaryPosts: ResponseDiaryPost[]; status: number }>(url)
       .subscribe(
         (response) => {
-          console.log(response);
           if (response.status === 200) {
             this.diaryPosts.next([...response.diaryPosts]);
           } else {
@@ -123,7 +134,7 @@ export class DiaryPostService {
     if (newPost) {
       this.http
         .post<{
-          createdPost: ResponsedDiaryPost;
+          createdPost: ResponseDiaryPost;
           createdPostId: string;
           message: string;
           status: number;
@@ -145,10 +156,10 @@ export class DiaryPostService {
       console.log('New post is not exist.');
     }
   }
-  updateDiaryPost(updatedPost: ResponsedDiaryPost) {
+  updateDiaryPost(updatedPost: ResponseDiaryPost) {
     if (updatedPost) {
       this.http
-        .put<{ message: string; post: ResponsedDiaryPost }>(
+        .put<{ message: string; post: ResponseDiaryPost }>(
           `${this.diaryUrl}/${updatedPost._id}`,
           updatedPost
         )

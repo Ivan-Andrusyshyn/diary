@@ -12,25 +12,7 @@
     flex-wrap: nowrap;
   }
 }
-.currantImage {
-  transform: scale(1.05);
-}
-ul {
-  gap: 1rem;
-  max-width: 700px;
-  margin: 0% auto;
-  margin-top: 1rem;
 
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  li {
-    transition: all 0.3s linear;
-    cursor: pointer;
-  }
-}
 .mat-stepper-vertical,
 .mat-stepper-horizontal {
   background-color: transparent;

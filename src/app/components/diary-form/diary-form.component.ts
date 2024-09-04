@@ -15,18 +15,19 @@ import { take } from 'rxjs';
 
 import {
   DiaryContentArray,
-  ResponsedDiaryPost,
+  ResponseDiaryPost,
 } from '../../shared/models/diary';
-import { ButtonWithLoaderComponent } from '../button-with-loader/button-with-loader.component';
+import { FormLoaderComponent } from '../form-loader/form-loader.component';
 
 @Component({
   selector: 'app-diary-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    ButtonWithLoaderComponent,
+    FormLoaderComponent,
     NgIf,
     MatButtonModule,
+    FormLoaderComponent,
   ],
   templateUrl: './diary-form.component.html',
   styleUrl: './diary-form.component.scss',
@@ -34,7 +35,7 @@ import { ButtonWithLoaderComponent } from '../button-with-loader/button-with-loa
 })
 export class DiaryFormComponent implements OnInit {
   @Input() formGroup!: FormGroup;
-  @Input() currentImage!: DiaryContentArray | ResponsedDiaryPost;
+  @Input() currentPost!: DiaryContentArray | ResponseDiaryPost;
 
   @Output() onSubmit = new EventEmitter();
   @Output() hideUpdateForm = new EventEmitter();

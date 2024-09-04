@@ -16,29 +16,19 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Пошта</mat-label>
-      <input matInput type="text" formControlName="email" />
+      <input matInput type="email" formControlName="email" />
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Пароль</mat-label>
-      <input matInput type="text" formControlName="password" />
+      <input matInput type="password" formControlName="password" />
     </mat-form-field>
     @if( formGroup.errors){
 
     <div class="form-error" matError>{{ errorMessage }}</div>
     }
-
-    <button
-      *ngIf="!(loading$ | async); else loading"
-      mat-raised-button
-      color="primary"
-      type="submit"
-    >
-      <span>Підтвердити</span>
-    </button>
+    <app-form-loader
+      [color]="'primary'"
+      [title]="isAuthPage(currentRoute)"
+    ></app-form-loader>
   </form>
 </div>
-<ng-template #loading>
-  <button mat-stroked-button disabled>
-    <mat-spinner diameter="20"> </mat-spinner>
-  </button>
-</ng-template>

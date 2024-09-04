@@ -6,26 +6,20 @@
       </div>
       <mat-tab-group>
         <mat-tab label="Котик">
-          <ul>
-            <li
-              *ngFor="let img of catsImgs"
-              [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-              (click)="onChooseImage(img)"
-            >
-              <img [src]="img.imgUrl" [alt]="img.imgAlt" />
-            </li>
-          </ul>
+          <app-diary-gallery
+            (onChooseImage)="onChooseImage($event)"
+            [currentImage]="currentImage"
+            [pictures]="catsGallery"
+          >
+          </app-diary-gallery>
         </mat-tab>
         <mat-tab label="Песик">
-          <ul>
-            <li
-              *ngFor="let img of dogsImgs"
-              [class.currantImage]="img.imgUrl === currentImage.imgUrl"
-              (click)="onChooseImage(img)"
-            >
-              <img [src]="img.imgUrl" [alt]="img.imgTitle" />
-            </li>
-          </ul>
+          <app-diary-gallery
+            (onChooseImage)="onChooseImage($event)"
+            [currentImage]="currentImage"
+            [pictures]="dogsGallery"
+          >
+          </app-diary-gallery>
         </mat-tab>
       </mat-tab-group>
     </div>
@@ -34,9 +28,8 @@
   <div #scrollTarget>
     <app-diary-form
       (onSubmit)="onSubmitForm()"
-      [currentImage]="currentImage"
+      [currentPost]="currentImage"
       [formGroup]="diaryFormGroup"
     ></app-diary-form>
   </div>
-  <!-- ===== -->
 </div>

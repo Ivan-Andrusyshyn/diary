@@ -1,17 +1,22 @@
 <ul class="diary-posts-list">
-  <ng-container *ngFor="let post of posts">
-    <li
-      class="diary-post-item"
-      (click)="onScrollToElByClick()"
-      [routerLink]="['/diary-posts', post._id]"
-    >
-      <img [src]="post.imgUrl" [alt]="post.imgAlt" class="diary-post-image" />
-      <div class="diary-post-details">
-        <div class="diary-post-date">
-          {{ post.createdAt | date : "dd/MM/yyyy" }}
+  <ng-container *ngIf="!(loadingService.isLoading() | async); else loading">
+    <ng-container *ngFor="let post of posts">
+      <li
+        class="diary-post-item"
+        (click)="onScrollToElByClick()"
+        [routerLink]="['/diary-posts', post._id]"
+      >
+        <img [src]="post.imgUrl" [alt]="post.imgAlt" class="diary-post-image" />
+        <div class="diary-post-details">
+          <div class="diary-post-date">
+            {{ post.createdAt | date : "dd/MM/yyyy" }}
+          </div>
+          <div class="diary-post-title">{{ post.imgTitle }}</div>
         </div>
-        <div class="diary-post-title">{{ post.imgTitle }}</div>
-      </div>
-    </li>
+      </li>
+    </ng-container>
   </ng-container>
 </ul>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

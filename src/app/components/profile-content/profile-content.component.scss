@@ -1,0 +1,45 @@
+.user-card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #333;
+}
+.form-wrap {
+  margin: 0 auto;
+}
+.user-card-subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+  color: #777;
+}
+
+.user-card-content {
+  margin-top: 16px;
+}
+
+.password h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  color: #333;
+}
+.user-card-header {
+  margin-bottom: 16px;
+}
+.password-wrap {
+  gap: 1rem;
+
+  display: flex;
+  align-items: center;
+  p {
+    font-size: 16px;
+    margin: 0;
+    color: #444;
+  }
+}
+.mdc-button {
+  margin-top: 0.5rem;
+
+  background-color: transparent;
+}

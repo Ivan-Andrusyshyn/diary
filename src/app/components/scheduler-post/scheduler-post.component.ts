@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { DateTime } from 'luxon';
 
-import { ResponsedDiaryPost } from '../../shared/models/diary';
+import { ResponseDiaryPost } from '../../shared/models/diary';
 
 @Component({
   selector: 'app-scheduler-post',
@@ -21,8 +21,8 @@ import { ResponsedDiaryPost } from '../../shared/models/diary';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SchedulerPostComponent {
-  @Input() activeDayPost!: Signal<ResponsedDiaryPost[]>;
-  @Input() activeDay!: WritableSignal<DateTime | null>;
+  @Input() activeDayPost!: ResponseDiaryPost[];
+  @Input() activeDay!: DateTime | null;
 
   trackByIndex(index: number): number {
     return index;

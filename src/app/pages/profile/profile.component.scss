@@ -6,49 +6,24 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+.card-btn {
+  margin-top: 1rem;
+  border-radius: 0.5rem;
 
-.user-card-header {
-  margin-bottom: 16px;
-}
-.password-wrap {
-  gap: 1rem;
+  width: 140px;
+  max-width: 200px;
+  padding: 8px;
+  font-size: 14px;
+  outline: none;
 
-  display: flex;
-  align-items: center;
-  p {
-    font-size: 16px;
-    margin: 0;
-    color: #444;
-  }
-}
-.mdc-button {
-  margin-top: 0.5rem;
-
-  background-color: transparent;
-}
-.user-card-title {
-  font-size: 24px;
   font-weight: 600;
-  margin: 0 0 8px;
-  color: #333;
+  border: none;
+  color: #111111;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.3s ease;
 }
-.form-wrap {
-  margin: 0 auto;
-}
-.user-card-subtitle {
-  font-size: 18px;
-  font-weight: 400;
-  margin: 0;
-  color: #777;
-}
-
-.user-card-content {
-  margin-top: 16px;
-}
-
-.password h3 {
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0 0 8px;
-  color: #333;
+.card-btn:hover {
+  font-size: 16px;
 }

@@ -1,12 +1,12 @@
 const diaryPost = require("../models/diaryPost");
-
-// GET all diary posts for the authenticated user
+const { onPaginate } = require("./pagination");
+// GET all diary posts for the authenticated user paginated
 const getAllDiaryPosts = async (req, res, next) => {
   try {
-    const userId = req.userData._id;
-    const diaryPosts = await diaryPost.find({ userId });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
 
-    res.status(200).json({ diaryPosts: diaryPosts, status: 200 });
+    onPaginate(page, limit, res);
   } catch (error) {
     console.error(error);
     res

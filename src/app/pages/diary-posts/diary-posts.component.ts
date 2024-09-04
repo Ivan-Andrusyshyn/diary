@@ -10,21 +10,19 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, debounceTime } from 'rxjs';
+import { BehaviorSubject, debounceTime, Observable } from 'rxjs';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
-import { DiaryPostDetailsComponent } from '../diary-post-details/diary-post-details.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialog } from '@angular/material/dialog';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { RouterOutlet } from '@angular/router';
 
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
-import { ResponsedDiaryPost } from '../../shared/models/diary';
-import { Router, RouterOutlet } from '@angular/router';
-import { LoaderComponent } from '../../components/loader/loader.component';
-import { LoadingService } from '../../shared/services/loading.service';
-import { DiaryCalendarComponent } from '../../components/diary-calendar/diary-calendar.component';
+import { DiaryPostDetailsComponent } from '../diary-post-details/diary-post-details.component';
+import { ResponseDiaryPost } from '../../shared/models/diary';
 import { DiaryComponent } from '../diary/diary.component';
 import { DiaryListComponent } from '../../components/diary-list/diary-list.component';
-import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { LoadingService } from '../../shared/services/loading.service';
+import { LoadingDirective } from '../../shared/directives/loading.directive';
 
 @Component({
   selector: 'app-diary-posts',
@@ -36,14 +34,14 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
     AsyncPipe,
     MatCardModule,
     DiaryListComponent,
-    LoaderComponent,
     MatFormFieldModule,
     MatInputModule,
-    DiaryCalendarComponent,
     DiaryComponent,
     MatTabsModule,
     FormsModule,
     DiaryPostDetailsComponent,
+    MatPaginatorModule,
+    LoadingDirective,
   ],
   providers: [DatePipe],
 
@@ -53,43 +51,53 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
 })
 export class DiaryPostsComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;
-  private diaryPostService = inject(DiaryPostService);
-  loadingService = inject(LoadingService);
-  datePipe = inject(DatePipe);
-  private router = inject(Router);
-  private dialog = inject(MatDialog);
-  private search = new BehaviorSubject<string>('');
 
-  diaryPosts!: ResponsedDiaryPost[];
-  filteredPosts!: ResponsedDiaryPost[];
+  private diaryPostService = inject(DiaryPostService);
+
+  private search = new BehaviorSubject<string>('');
+  private loadingService = inject(LoadingService);
+
+  diaryPosts$!: Observable<ResponseDiaryPost[]>;
+  pageIndex: number = 0;
+  pageSize: number = 5;
+  diaryTotalLength$!: Observable<number>;
+  loading$!: Observable<boolean>;
 
   constructor() {
-    this.diaryPostService.diaryPosts$.subscribe((response) => {
-      if (response.length === 0 && !this.search.value.trim()) {
-        this.diaryPostService.getDiaryPosts();
-      }
-      this.diaryPosts = response.slice();
-      this.filteredPosts = response.slice();
-    });
+    this.loading$ = this.loadingService.isLoading();
+    this.diaryPostService.getDiaryPosts(this.pageIndex + 1, this.pageSize);
+    this.diaryPosts$ = this.diaryPostService.diaryPosts$;
+
     this.search
-      .pipe(debounceTime(1000), takeUntilDestroyed())
+      .pipe(debounceTime(500), takeUntilDestroyed())
       .subscribe((searchText: string) => {
         if (searchText.trim()) {
           this.diaryPostService.getDiaryPostsByKeyword(searchText);
         } else {
-          this.diaryPostService.getDiaryPosts();
           console.log('Here is problem with keyword.');
         }
       });
+
+    this.diaryTotalLength$ = this.diaryPostService.diaryTotalLength$;
+  }
+
+  getProductsWithPagination(pageEvent: PageEvent | null) {
+    this.pageIndex = pageEvent?.pageIndex || 0;
+    this.pageSize = pageEvent?.pageSize || 2;
+
+    this.diaryPostService.getDiaryPosts(this.pageIndex + 1, this.pageSize);
   }
   onSearch(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const searchText = inputElement.value;
 
-    if (searchText !== null) {
+    if (searchText) {
       this.search.next(searchText);
+    } else {
+      this.diaryPostService.getDiaryPosts(this.pageIndex + 1, this.pageSize);
     }
   }
+
   onScrollToTargetEl() {
     this.scrollEll.nativeElement.scrollIntoView({
       behavior: 'smooth',
@@ -101,32 +109,6 @@ export class DiaryPostsComponent {
       this.onScrollToTargetEl();
     } else {
       console.log('scroll element is not exist.');
-    }
-  }
-  filterPostsByDate(date: Date | null) {
-    if (date) {
-      const formattedDate = this.datePipe.transform(date, 'dd/MM/yyyy');
-      const choosePost = this.diaryPosts.filter(
-        (post) =>
-          this.datePipe.transform(post.createdAt, 'dd/MM/yyyy') ===
-          formattedDate
-      );
-      if (choosePost.length === 0) {
-        this.dialog.open(ConfirmDialogComponent, {
-          data: { title: 'Цієї дати немає допису.', confirm: false },
-        });
-        return;
-      }
-      if (choosePost) {
-        if (this.scrollEll && this.scrollEll.nativeElement) {
-          this.onScrollToTargetEl();
-        } else {
-          console.log('scroll element is not exist.');
-        }
-        this.router.navigate(['/diary-posts', choosePost[0]._id]);
-      }
-    } else {
-      this.filteredPosts = this.diaryPosts;
     }
   }
 }

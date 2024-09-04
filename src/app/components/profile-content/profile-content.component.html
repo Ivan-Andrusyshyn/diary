@@ -1,0 +1,18 @@
+<div class="content-container" *ngIf="user">
+  <div class="user-card-header">
+    <h2 class="user-card-title">Ім'я: {{ user.name }}</h2>
+    <h3 class="user-card-subtitle">Пошта: {{ user.email }}</h3>
+  </div>
+  <div class="user-card-content">
+    <div class="password">
+      <h3>Пароль:</h3>
+      <div class="password-wrap">
+        <p>{{ isShow ? user.password : "******" }}</p>
+        <button mat-button (click)="handleShowPassword()">
+          {{ isShow ? "Сховати" : "Показати" }} пароль
+        </button>
+      </div>
+    </div>
+  </div>
+  <button mat-raised-button (click)="handleToggleInfo()">Змінити</button>
+</div>

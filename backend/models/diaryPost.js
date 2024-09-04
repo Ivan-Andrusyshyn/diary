@@ -16,5 +16,6 @@ const diaryPostSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+diaryPostSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("diary-post", diaryPostSchema);

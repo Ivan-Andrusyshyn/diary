@@ -1,0 +1,27 @@
+<div class="calendar-headline">
+  <div class="calendar-headline-month" (click)="handleOpenSelectors()">
+    {{ firstDayOfActiveMonth.setLocale("uk").toFormat("LLLL") }},
+    {{ firstDayOfActiveMonth.year }}
+  </div>
+
+  <div class="calendar-headline-controls">
+    <div class="calendar-headline-control" (click)="handlePreviousMonth()">
+      «
+    </div>
+    <div
+      class="calendar-headline-control calendar-headline-control-today"
+      (click)="handleToToday()"
+    >
+      Сьогодні
+    </div>
+    <div class="calendar-headline-control" (click)="handleNextMonth()">»</div>
+  </div>
+</div>
+<div class="calendar-weeks-grid">
+  <div
+    *ngFor="let weekDay of weekDays; trackBy: trackByIndex"
+    class="calendar-weeks-grid-cell"
+  >
+    {{ weekDay }}
+  </div>
+</div>

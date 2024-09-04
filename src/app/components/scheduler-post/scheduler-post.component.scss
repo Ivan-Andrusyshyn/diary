@@ -1,3 +1,7 @@
+.schedule-container {
+  margin: 0 auto;
+  max-width: 600px;
+}
 .schedule-title {
   margin: 0;
   font-size: 1rem;
@@ -22,19 +26,16 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 
   @media (min-width: 768px) {
-    min-height: 150px;
-    max-width: 400px;
+    min-height: 180px;
+    max-width: 380px;
   }
   @media (min-width: 1200px) {
+    height: 210px;
     width: 100%;
-    min-height: 150px;
-    max-width: 400px;
+    max-width: 380px;
   }
 }
-.schedule-container {
-  margin: 0 auto;
-  max-width: 600px;
-}
+
 .schedule-description {
   font-size: 1rem;
   max-height: 80px;

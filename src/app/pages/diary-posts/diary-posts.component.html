@@ -1,48 +1,45 @@
 <div class="container">
   <div class="content-wrap">
     <div>
-      <mat-tab-group>
-        <mat-tab class="tab-container" label="Пошук за датою">
-          <div style="margin-top: 1rem">
-            <app-diary-calendar
-              (filterPostsByDate)="filterPostsByDate($event)"
-              [diaryPosts]="diaryPosts"
-            ></app-diary-calendar>
-          </div>
-        </mat-tab>
-        <mat-tab class="tab-container" label="Пошук за словом">
-          <div style="margin-top: 1rem">
-            <mat-form-field class="input-wrap">
-              <mat-label>Подробиці пошуку</mat-label>
-              <input type="text" matInput (keyup)="onSearch($event)" />
-            </mat-form-field>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-      <h3>Дописи :</h3>
-      <div class="list-wrap">
-        <ng-container
-          *ngIf="!(loadingService.isLoading() | async); else loading"
-        >
-          <app-diary-list
-            *ngIf="filteredPosts.length > 0; else noContent"
-            [posts]="filteredPosts"
-            (scrollToElByClick)="scrollToElByClick()"
-          ></app-diary-list>
+      <mat-form-field class="input-wrap">
+        <mat-label>Подробиці пошуку</mat-label>
+        <input type="text" matInput (keyup)="onSearch($event)" />
+      </mat-form-field>
+      <hr />
+      <h3 class="list-title">Дописи :</h3>
+
+      <ng-template [apploading]="(loading$ | async) ?? false">
+        <ng-container *ngIf="diaryPosts$ | async as posts; else noContent">
+          <ng-container *ngIf="posts.length; else noContent">
+            <div class="list-wrap">
+              <app-diary-list
+                [posts]="posts"
+                (scrollToElByClick)="scrollToElByClick()"
+              ></app-diary-list>
+            </div>
+          </ng-container>
         </ng-container>
+      </ng-template>
+
+      <ng-template #noContent>
+        <h3>Нажаль дописів не знайдено.</h3>
+      </ng-template>
+
+      <div class="pagination-wrap">
+        <mat-paginator
+          [length]="diaryTotalLength$ | async"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="[5, 10]"
+          aria-label="Select page"
+          (page)="getProductsWithPagination($event)"
+        >
+        </mat-paginator>
       </div>
     </div>
 
-    <div class="oultet-wrap" #scrollTarget>
-      <router-outlet />
+    <div class="outlet-wrap" #scrollTarget>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
-<ng-template #noContent>
-  <div class="no-content">
-    <h3>Нажаль дописів не знайдено.</h3>
-  </div>
-</ng-template>
-<ng-template #loading>
-  <app-loader></app-loader>
-</ng-template>

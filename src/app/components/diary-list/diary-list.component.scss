@@ -1,24 +1,27 @@
 .diary-posts-list {
-  width: 100%;
-  padding: 0;
+  max-width: 100%;
   margin: 0;
   gap: 1rem;
-  height: 230px;
+  height: 200px;
+  max-height: 230px;
+
   list-style-type: none;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
   @media screen and (min-width: 768px) {
+    max-height: 430px;
     height: 420px;
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
 }
 
 .diary-post-item {
   border: 1px solid #ddd;
   width: 100%;
-  max-width: 460px;
+  max-width: 360px;
   height: 40px;
   border-radius: 6px;
   padding: 0.5rem;

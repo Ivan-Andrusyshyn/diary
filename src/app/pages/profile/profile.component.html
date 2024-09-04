@@ -1,29 +1,23 @@
-<div class="user-card">
+<div
+  class="user-card"
+  *apploading="((isLoading$ | async) ?? false) && !!(user$ | async)"
+>
   <ng-container *ngIf="!isUpdate; else updateMode">
-    <div class="user-card-header">
-      <h2 class="user-card-title">Ім'я: {{ user.name }}</h2>
-      <h3 class="user-card-subtitle">Пошта: {{ user.email }}</h3>
-    </div>
-    <div class="user-card-content">
-      <div class="password">
-        <h3>Пароль:</h3>
-        <div class="password-wrap">
-          <p>{{ isShow ? user.password : "******" }}</p>
-          <button mat-button (click)="onShowPassword()">
-            {{ isShow ? "Сховати" : "Показати" }} пароль
-          </button>
-        </div>
-      </div>
-    </div>
-    <button mat-raised-button (click)="onToggleUpdateInfo()">Змінити</button>
+    <app-profile-content
+      (onShowPassword)="onShowPassword()"
+      (onToggleUpdateInfo)="onToggleUpdateInfo($event)"
+      [isUpdate]="isUpdate"
+      [isShow]="isShow"
+      [user]="user$ | async"
+    >
+    </app-profile-content>
   </ng-container>
 </div>
-
 <ng-template #updateMode>
   <app-auth-form
-    [title]="'Sign-up'"
+    [titleName]="formTitle"
     (onSubmitForm)="onSubmitForm()"
     [formGroup]="userFormGroup"
   ></app-auth-form>
-  <button mat-raised-button (click)="onToggleUpdateInfo()">Відмінити</button>
+  <button class="card-btn" (click)="onToggleUpdateInfo()">Відмінити</button>
 </ng-template>
