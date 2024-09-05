@@ -2,11 +2,12 @@ import { NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DateTime } from 'luxon';
 import { ResponseDiaryPost } from '../../shared/models/diary';
+import { SchedulerBgDirective } from '../../shared/directives/scheduler-bg.directive';
 
 @Component({
   selector: 'app-scheduler-cell',
   standalone: true,
-  imports: [NgClass, NgIf],
+  imports: [NgClass, NgIf, SchedulerBgDirective],
   templateUrl: './scheduler-cell.component.html',
   styleUrl: './scheduler-cell.component.scss',
 })

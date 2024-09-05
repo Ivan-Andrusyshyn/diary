@@ -15,6 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'diary-posts',
+    data: { animation: 'PostList' },
     loadComponent: () =>
       import('./pages/diary-posts/diary-posts.component').then(
         (m) => m.DiaryPostsComponent
@@ -22,6 +23,7 @@ export const routes: Routes = [
     children: [
       {
         path: ':id',
+        data: { animation: 'PostDetails' },
         loadComponent: () =>
           import(
             './pages/diary-post-details/diary-post-details.component'

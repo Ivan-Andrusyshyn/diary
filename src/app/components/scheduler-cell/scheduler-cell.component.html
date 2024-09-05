@@ -9,11 +9,7 @@
   <div
     *ngIf="dayOfMonth.post[0]; else noPostImage"
     class="bg-container"
-    [style.backgroundImage]="
-      'linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(' +
-      dayOfMonth.post[0].imgUrl +
-      ')'
-    "
+    [appSchedulerBg]="dayOfMonth.post[0].imgUrl"
     (click)="onScrollToElByClick()"
   >
     {{ dayOfMonth.date.day }}

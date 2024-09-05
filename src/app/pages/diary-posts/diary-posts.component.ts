@@ -23,6 +23,7 @@ import { DiaryComponent } from '../diary/diary.component';
 import { DiaryListComponent } from '../../components/diary-list/diary-list.component';
 import { LoadingService } from '../../shared/services/loading.service';
 import { LoadingDirective } from '../../shared/directives/loading.directive';
+import { slideInAnimation } from '../../shared/animations/slideInAnimation';
 
 @Component({
   selector: 'app-diary-posts',
@@ -38,15 +39,15 @@ import { LoadingDirective } from '../../shared/directives/loading.directive';
     MatInputModule,
     DiaryComponent,
     MatTabsModule,
+    DatePipe,
     FormsModule,
     DiaryPostDetailsComponent,
     MatPaginatorModule,
     LoadingDirective,
   ],
-  providers: [DatePipe],
-
   templateUrl: './diary-posts.component.html',
   styleUrl: './diary-posts.component.scss',
+  animations: [slideInAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiaryPostsComponent {

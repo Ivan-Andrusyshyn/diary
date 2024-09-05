@@ -5,12 +5,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AuthService } from './shared/services/auth.service';
-const privateRoutes: string[] = [
-  '/profile',
-  '/diary/create-post',
-  '/success-diary',
-  '/diary-posts',
-];
+const privateRoutes: string[] = ['/sign-in', '/sign-up'];
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -30,7 +25,7 @@ export class AppComponent {
       .subscribe((isLoggedIn) => {
         const currentRoute = location.pathname;
 
-        if (isLoggedIn && !privateRoutes.includes(currentRoute)) {
+        if (isLoggedIn && privateRoutes.includes(currentRoute)) {
           this.router.navigate(['/profile']);
         }
       });
