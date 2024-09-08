@@ -2,11 +2,9 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserData } from '../../shared/models/userData.model';
-
 import { DiaryPostService } from '../../shared/services/diaryPost.service';
 import { LoaderComponent } from '../loader/loader.component';
 import {
@@ -26,7 +24,6 @@ type HeaderLinks = {
   standalone: true,
   imports: [
     MatButtonModule,
-    MatIconModule,
     NgIf,
     AsyncPipe,
     LoaderComponent,

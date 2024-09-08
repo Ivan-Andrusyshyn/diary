@@ -27,3 +27,18 @@
 .active {
   color: cadetblue;
 }
+.container-more-then-tablet {
+  display: none;
+
+  @media screen and (min-width: 480px) {
+    display: block;
+  }
+}
+.container-less-then-tablet {
+  @media screen and (min-width: 480px) {
+    display: none;
+  }
+}
+.mat-mdc-button:not(:disabled) {
+  color: #bdbdbd;
+}

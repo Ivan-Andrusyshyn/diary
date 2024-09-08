@@ -1,7 +1,24 @@
-<ul class="nav-list">
-  <li *ngFor="let link of headerLinks">
-    <a class="nav-link" routerLinkActive="active" [routerLink]="[link.route]">{{
-      link.routeName
-    }}</a>
-  </li>
-</ul>
+<div class="container-more-then-tablet">
+  <ul class="nav-list">
+    <li *ngFor="let link of headerLinks">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLink]="[link.route]"
+        >{{ link.routeName }}</a
+      >
+    </li>
+  </ul>
+</div>
+<div class="container-less-then-tablet">
+  <button mat-button [matMenuTriggerFor]="menu">Меню</button>
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let link of headerLinks"
+      [routerLink]="[link.route]"
+    >
+      {{ link.routeName }}
+    </button>
+  </mat-menu>
+</div>

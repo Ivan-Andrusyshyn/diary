@@ -19,9 +19,15 @@
     align-items: center;
     gap: 2rem;
     justify-content: space-between;
+    width: 380px;
+    @media screen and (min-width: 480px) {
+      width: auto;
+    }
   }
 }
-
+.app-header-link-list {
+  width: 100%;
+}
 .header-container {
   max-width: 1200px;
   display: flex;
@@ -30,8 +36,16 @@
   align-items: center;
 }
 
+.container-more-then-tablet {
+  display: none;
+  @media screen and (min-width: 480px) {
+    display: block;
+  }
+}
+
 .mat-mdc-raised-button {
-  width: 64px;
+  width: 34px;
+  padding: 0;
   font-size: 0.8rem;
   @media screen and (min-width: 768px) {
     width: 74px;
