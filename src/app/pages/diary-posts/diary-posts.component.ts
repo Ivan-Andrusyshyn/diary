@@ -54,9 +54,9 @@ export class DiaryPostsComponent {
   @ViewChild('scrollTarget') scrollEll!: ElementRef;
 
   private diaryPostService = inject(DiaryPostService);
+  private loadingService = inject(LoadingService);
 
   private search = new BehaviorSubject<string>('');
-  private loadingService = inject(LoadingService);
 
   diaryPosts$!: Observable<ResponseDiaryPost[]>;
   pageIndex: number = 0;

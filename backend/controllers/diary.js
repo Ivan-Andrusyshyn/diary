@@ -144,16 +144,16 @@ const updateDiaryPost = async (req, res, next) => {
       imgTitle: req.body.imgTitle,
       imgAlt: req.body.imgAlt,
     };
-    console.log(updatedDiaryPost);
 
-    const result = await diaryPost.updateOne(
-      { _id: diaryPostId },
-      updatedDiaryPost
+    const result = await diaryPost.findByIdAndUpdate(
+      diaryPostId,
+      updatedDiaryPost,
+      { new: true }
     );
 
     res.status(200).json({
       message: "Update successful!",
-      post: { ...updatedDiaryPost, _id: diaryPostId },
+      post: result,
     });
   } catch (err) {
     console.error(err);

@@ -175,7 +175,7 @@ export class DiaryPostService {
           },
           (error) => {
             console.error('Error updating diary post:', error);
-            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            this.dialog.open(ConfirmDialogComponent, {
               data: { title: error.error.message, confirm: false },
             });
           }

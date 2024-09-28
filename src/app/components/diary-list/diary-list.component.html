@@ -1,5 +1,5 @@
 <ul class="diary-posts-list">
-  <ng-container *ngIf="!(loadingService.isLoading() | async); else loading">
+  <ng-container *ngIf="!(isLoading$ | async); else loading">
     <ng-container *ngFor="let post of posts">
       <li
         class="diary-post-item"
