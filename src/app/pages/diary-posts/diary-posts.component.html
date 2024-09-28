@@ -25,9 +25,12 @@
         <h3>Нажаль дописів не знайдено.</h3>
       </ng-template>
 
-      <div class="pagination-wrap">
+      <div
+        class="pagination-wrap"
+        *ngIf="diaryTotalLength$ | async as diaryLength"
+      >
         <mat-paginator
-          [length]="diaryTotalLength$ | async"
+          [length]="diaryLength"
           [pageSize]="pageSize"
           [pageIndex]="pageIndex"
           [pageSizeOptions]="[5, 10]"

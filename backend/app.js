@@ -25,14 +25,14 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
-app.use(
-  session({
-    secret: `${process.env.PASSWORD}`,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
+// app.use(
+//   session({
+//     secret: `${process.env.PASSWORD}`,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false },
+//   })
+// );
 app.use(
   cors({
     origin: ["https://diary-yzm6.vercel.app", "http://localhost:4200"],

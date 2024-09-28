@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DateTime, Interval } from 'luxon';
 import { ResponseDiaryPost } from '../models/diary';
+
 interface DaysOfMonth {
   [date: string]: ResponseDiaryPost[];
 }
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,10 +19,11 @@ export class SuccessCalendarService {
   private firstDayOfActiveMonth = new BehaviorSubject<DateTime>(
     this.today.startOf('month')
   );
-  firstDayOfActiveMonth$: Observable<DateTime> =
-    this.firstDayOfActiveMonth.asObservable();
 
   private diaryPostsMap: DaysOfMonth = {};
+
+  firstDayOfActiveMonth$: Observable<DateTime> =
+    this.firstDayOfActiveMonth.asObservable();
 
   constructor() {}
   setFirstDayOfActiveMonth = (date: DateTime) => {
@@ -34,9 +37,9 @@ export class SuccessCalendarService {
     }
   };
 
-  getMapsDiaryPosts = () => this.diaryPostsMap;
+  getReducedDiaryPosts = () => this.diaryPostsMap;
 
-  updateDiaryPostsMap(diaryPosts: ResponseDiaryPost[]): void {
+  updateDiaryPostsReduce(diaryPosts: ResponseDiaryPost[]): void {
     const diaryPostsReduce = diaryPosts.reduce((map, post) => {
       const dateStr = DateTime.fromISO(post.createdAt).toISODate() ?? '';
       if (dateStr) {

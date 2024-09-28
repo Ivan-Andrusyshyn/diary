@@ -1,13 +1,13 @@
 const diaryPost = require("../models/diaryPost");
 
-const onPaginate = (page, limit, res) => {
+const onPaginate = (page, limit, userId, res) => {
   const options = {
     page: page,
     limit: limit,
   };
 
   diaryPost
-    .paginate({}, options)
+    .paginate({ userId: userId }, options)
     .then((result) => {
       res.status(200).json({
         message: "Diary fetched successfully!",

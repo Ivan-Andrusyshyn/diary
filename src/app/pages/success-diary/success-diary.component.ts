@@ -15,6 +15,11 @@ import { SuccessCalendarService } from '../../shared/services/success-calendar.s
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SchedulerHeadlineComponent } from '../../components/scheduler-headline/scheduler-headline.component';
 
+interface DayOfMonth {
+  date: DateTime;
+  post: ResponseDiaryPost[];
+}
+
 @Component({
   selector: 'app-success-diary',
   standalone: true,
@@ -37,7 +42,7 @@ export class SuccessDiaryComponent {
   firstDayOfActiveMonth!: DateTime;
 
   activeDay!: DateTime;
-  daysOfMonth: { date: DateTime; post: ResponseDiaryPost[] }[] = [];
+  daysOfMonth: DayOfMonth[] = [];
 
   activeDayPost!: ResponseDiaryPost[];
 
@@ -96,8 +101,16 @@ export class SuccessDiaryComponent {
 
   goToToday(): void {
     this.firstDayOfActiveMonth = this.today.startOf('month');
+    this.successCalendarService.setFirstDayOfActiveMonth(
+      this.firstDayOfActiveMonth
+    );
+
     this.loadDiaryPosts();
+
+    this.successCalendarService.setActiveDay(this.today);
+    this.setActiveDayPost(this.today);
   }
+
   goToNextMonth(): void {
     this.successCalendarService.setFirstDayOfActiveMonth(
       this.firstDayOfActiveMonth.plus({ month: 1 })
@@ -106,15 +119,17 @@ export class SuccessDiaryComponent {
     this.loadDiaryPosts();
   }
   private setDaysOfMonth = (posts: ResponseDiaryPost[]) => {
-    this.successCalendarService.updateDiaryPostsMap(posts);
+    this.successCalendarService.updateDiaryPostsReduce(posts);
     this.daysOfMonth = this.successCalendarService.getDaysOfMonth();
     this.cd.markForCheck();
   };
   private setActiveDayPost = (day: DateTime) => {
     this.activeDay = day;
+
     const activeDayISO = day.toISODate();
+
     this.activeDayPost = activeDayISO
-      ? this.successCalendarService.getMapsDiaryPosts()[activeDayISO]
+      ? this.successCalendarService.getReducedDiaryPosts()[activeDayISO]
       : [];
   };
   private getCurrentMonthAndYear(): { month: number; year: number } {
